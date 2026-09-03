@@ -121,7 +121,7 @@ abstract class AppLocalizations {
   /// No description provided for @appTitle.
   ///
   /// In en, this message translates to:
-  /// **'A B S O R B'**
+  /// **'胖虎听书'**
   String get appTitle;
 
   /// No description provided for @online.
@@ -4053,6 +4053,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Buy me a coffee'**
   String get buyMeACoffee;
+
+  /// No description provided for @classicWording.
+  ///
+  /// In en, this message translates to:
+  /// **'Classic wording'**
+  String get classicWording;
+
+  /// No description provided for @classicWordingAbsorbDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Using \"Absorb\", \"Absorbing\", \"Fully Absorbed\"'**
+  String get classicWordingAbsorbDescription;
+
+  /// No description provided for @lockRotation.
+  ///
+  /// In en, this message translates to:
+  /// **'Lock rotation'**
+  String get lockRotation;
+
+  /// No description provided for @screenCanRotate.
+  ///
+  /// In en, this message translates to:
+  /// **'Screen can rotate with the device'**
+  String get screenCanRotate;
+
+  /// No description provided for @duckBriefInterruptions.
+  ///
+  /// In en, this message translates to:
+  /// **'Duck brief interruptions'**
+  String get duckBriefInterruptions;
+
+  /// No description provided for @autoDownloadSeries.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-download series'**
+  String get autoDownloadSeries;
+
+  /// No description provided for @previousChapter.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous chapter'**
+  String get previousChapter;
+
+  /// No description provided for @nextChapter.
+  ///
+  /// In en, this message translates to:
+  /// **'Next chapter'**
+  String get nextChapter;
+
+  /// No description provided for @playerFailedToInitialize.
+  ///
+  /// In en, this message translates to:
+  /// **'Player failed to initialize'**
+  String get playerFailedToInitialize;
+
+  /// No description provided for @couldNotConnectToServer.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not connect to server'**
+  String get couldNotConnectToServer;
+
+  /// No description provided for @couldNotStartTranscodedPlayback.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not start transcoded playback'**
+  String get couldNotStartTranscodedPlayback;
+
+  /// No description provided for @noAudioFilesInTranscodedSession.
+  ///
+  /// In en, this message translates to:
+  /// **'No audio files in transcoded session'**
+  String get noAudioFilesInTranscodedSession;
+
+  /// No description provided for @previewEnding.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview ending'**
+  String get previewEnding;
+
+  /// No description provided for @nothingListenedYet.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing listened in {_yirYear} yet'**
+  String nothingListenedYet(String _yirYear);
 
   /// No description provided for @appVersionFormat.
   ///
@@ -14882,6 +14966,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Playing this passage in the audiobook'**
   String get findInAudiobookPlaying;
+
+  /// No description provided for @skipIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip intro'**
+  String get skipIntro;
+
+  /// No description provided for @skipOutro.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip outro'**
+  String get skipOutro;
+
+  /// No description provided for @skipIntroSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip intro settings'**
+  String get skipIntroSettings;
+
+  /// No description provided for @skipOutroSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip outro settings'**
+  String get skipOutroSettings;
+
+  /// No description provided for @seconds.
+  ///
+  /// In en, this message translates to:
+  /// **'s'**
+  String get seconds;
 }
 
 class _AppLocalizationsDelegate

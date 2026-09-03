@@ -710,6 +710,36 @@ class PlayerSettings {
   }
 
   // Optional second, bigger skip pair on the player card (GH #242).
+  // ── Skip intro/outro (per-book) ──
+
+  /// Per-book intro skip time (seconds). 0 = no skip.
+  static Future<int> getSkipIntro(String bookId) async {
+    if (bookId.isEmpty) return 0;
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getInt('skip_intro_$bookId') ?? 0;
+  }
+
+  static Future<void> setSkipIntro(String bookId, int seconds) async {
+    if (bookId.isEmpty) return;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('skip_intro_$bookId', seconds);
+    _notify();
+  }
+
+  /// Per-book outro skip time (seconds). 0 = no skip.
+  static Future<int> getSkipOutro(String bookId) async {
+    if (bookId.isEmpty) return 0;
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getInt('skip_outro_$bookId') ?? 0;
+  }
+
+  static Future<void> setSkipOutro(String bookId, int seconds) async {
+    if (bookId.isEmpty) return;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('skip_outro_$bookId', seconds);
+    _notify();
+  }
+
   static Future<bool> getLongSkipButtons() => _get('longSkipButtons', false);
   static Future<void> setLongSkipButtons(bool value) => _set('longSkipButtons', value, notify: true);
   static Future<int> getLongForwardSkip() => _get('longForwardSkip', 60);

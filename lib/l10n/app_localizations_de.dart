@@ -2216,6 +2216,53 @@ class AppLocalizationsDe extends AppLocalizations {
   String get buyMeACoffee => 'Spendier mir einen Kaffee';
 
   @override
+  String get classicWording => 'Classic wording';
+
+  @override
+  String get classicWordingAbsorbDescription =>
+      'Using \"Absorb\", \"Absorbing\", \"Fully Absorbed\"';
+
+  @override
+  String get lockRotation => 'Lock rotation';
+
+  @override
+  String get screenCanRotate => 'Screen can rotate with the device';
+
+  @override
+  String get duckBriefInterruptions => 'Duck brief interruptions';
+
+  @override
+  String get autoDownloadSeries => 'Auto-download series';
+
+  @override
+  String get previousChapter => 'Previous chapter';
+
+  @override
+  String get nextChapter => 'Next chapter';
+
+  @override
+  String get playerFailedToInitialize => 'Player failed to initialize';
+
+  @override
+  String get couldNotConnectToServer => 'Could not connect to server';
+
+  @override
+  String get couldNotStartTranscodedPlayback =>
+      'Could not start transcoded playback';
+
+  @override
+  String get noAudioFilesInTranscodedSession =>
+      'No audio files in transcoded session';
+
+  @override
+  String get previewEnding => 'Preview ending';
+
+  @override
+  String nothingListenedYet(String _yirYear) {
+    return 'Nothing listened in $_yirYear yet';
+  }
+
+  @override
   String appVersionFormat(String version) {
     return 'Absorb v$version';
   }
@@ -8721,4 +8768,19 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get findInAudiobookPlaying => 'Playing this passage in the audiobook';
+
+  @override
+  String get skipIntro => 'Skip intro';
+
+  @override
+  String get skipOutro => 'Skip outro';
+
+  @override
+  String get skipIntroSettings => 'Skip intro settings';
+
+  @override
+  String get skipOutroSettings => 'Skip outro settings';
+
+  @override
+  String get seconds => 's';
 }

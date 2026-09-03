@@ -73,7 +73,7 @@ class DictionaryService {
       final resp = await http.get(
         Uri.parse(
             'https://en.wiktionary.org/api/rest_v1/page/definition/${Uri.encodeComponent(word)}'),
-        headers: const {'User-Agent': 'Absorb audiobook app'},
+        headers: const {'User-Agent': '胖虎听书'},
       ).timeout(const Duration(seconds: 8));
       if (resp.statusCode == 404) {
         return DictionaryResult(DictionaryStatus.notFound, word);

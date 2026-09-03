@@ -5,6 +5,9 @@ on:
     branches: [main]
     paths:
       - 'lib/l10n/**'
+      - 'lib/screens/**'
+      - 'lib/services/**'
+      - 'lib/widgets/**'
       - 'pubspec.yaml'
   workflow_dispatch:
     inputs:
@@ -43,7 +46,7 @@ jobs:
           RAW=$(grep '^version:' pubspec.yaml | sed 's/version: *//')
           VERSION_NAME="${RAW%%+*}"
           BUILD="${RAW##*+}"
-          BASE="absorb-${RAW//+/-}"
+          BASE="panghu-${RAW//+/-}"
           if [ "$PRE" = "true" ]; then
             echo "tag=v${VERSION_NAME}-zh-${BUILD}" >> "$GITHUB_OUTPUT"
             echo "fname=${BASE}-zh-pre" >> "$GITHUB_OUTPUT"
@@ -68,31 +71,47 @@ jobs:
           storeFile=$RUNNER_TEMP/absorb-upload-key.jks
           EOF
 
-      - name: Build GitHub APKs
-        run: bash scripts/build-github-apks
+      - name: Build split APKs per ABI
+        run: |
+          flutter build apk --release --flavor github --split-per-abi --dart-define=GITHUB_BUILD=true
 
-      - name: Rename universal APK
+      - name: Rename and organize APKs
         env:
           FNAME: ${{ steps.version.outputs.fname }}
         run: |
-          UNIVERSAL=$(ls build/app/outputs/apk/github/release/*-universal.apk | head -1)
-          mv "$UNIVERSAL" "build/app/outputs/apk/github/release/${FNAME}.apk"
+          mkdir -p output
+          for abi in arm64-v8a armeabi-v7a x86_64; do
+            APK=$(ls build/app/outputs/apk/github/release/*-${abi}.apk 2>/dev/null | head -1)
+            if [ -n "$APK" ]; then
+              cp "$APK" "output/${FNAME}-${abi}.apk"
+              echo "✅ ${FNAME}-${abi}.apk"
+            fi
+          done
+          ls -la output/
 
-      - name: Upload APK to GitHub Release
+      - name: Upload APKs to GitHub Release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VERSION_TAG: ${{ steps.version.outputs.tag }}
           PRE: ${{ inputs.prerelease }}
         run: |
-          APK="build/app/outputs/apk/github/release/${{ steps.version.outputs.fname }}.apk"
-          if [ ! -f "$APK" ]; then
-            echo "APK not found: $APK"
+          shopt -s nullglob
+          APKS=(output/*.apk)
+          if [ "${#APKS[@]}" -eq 0 ]; then
+            echo "No APKs found"
             exit 1
           fi
+          echo "Uploading ${#APKS[@]} APKs..."
           if gh release view "$VERSION_TAG" &>/dev/null; then
-            gh release upload "$VERSION_TAG" "$APK" --clobber
+            gh release upload "$VERSION_TAG" "${APKS[@]}" --clobber
           else
-            CREATE_ARGS=(--draft --title "$VERSION_TAG" --notes "中文汉化版本")
+            NOTES="胖虎听书 中文汉化版本\n\n"
+            for apk in "${APKS[@]}"; do
+              SIZE=$(du -h "$apk" | cut -f1)
+              ABI=$(basename "$apk" | sed 's/.*-\(.*\)\.apk/\1/')
+              NOTES+="- ${ABI}: ${SIZE}\n"
+            done
+            CREATE_ARGS=(--draft --title "$VERSION_TAG" --notes "$(echo -e "$NOTES")")
             [ "$PRE" = "true" ] && CREATE_ARGS+=(--prerelease)
-            gh release create "$VERSION_TAG" "$APK" "${CREATE_ARGS[@]}"
+            gh release create "$VERSION_TAG" "${APKS[@]}" "${CREATE_ARGS[@]}"
           fi

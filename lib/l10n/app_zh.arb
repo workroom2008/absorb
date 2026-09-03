@@ -1,6 +1,6 @@
 {
   "@@locale": "zh",
-  "appTitle": "A B S O R B",
+  "appTitle": "胖虎听书",
   "online": "在线",
   "offline": "离线",
   "stillOffline": "仍处于离线状态。点击重试。",
@@ -667,6 +667,25 @@
   "trustAllCertificatesOffSubtitle": "关闭 - 仅接受受信任的证书",
   "supportTheDev": "支持开发者",
   "buyMeACoffee": "请我喝杯咖啡",
+  "classicWording": "经典措辞",
+  "classicWordingAbsorbDescription": "使用\u201c胖虎\u201d、\u201c正在收听\u201d、\u201c收听完毕\u201d",
+  "lockRotation": "锁定屏幕旋转",
+  "screenCanRotate": "屏幕可随设备旋转",
+  "duckBriefInterruptions": "短暂中断时降低音量",
+  "autoDownloadSeries": "自动下载系列",
+  "previousChapter": "上一章",
+  "nextChapter": "下一章",
+  "playerFailedToInitialize": "播放器初始化失败",
+  "couldNotConnectToServer": "无法连接到服务器",
+  "couldNotStartTranscodedPlayback": "无法开始转码播放",
+  "noAudioFilesInTranscodedSession": "转码会话中没有音频文件",
+  "previewEnding": "预览结尾",
+  "nothingListenedYet": "{_yirYear}年还没有收听记录",
+  "@nothingListenedYet": {
+    "placeholders": {
+      "_yirYear": { "type": "String" }
+    }
+  },
   "appVersionFormat": "Absorb v{version}",
   "@appVersionFormat": {
     "placeholders": {
@@ -4959,5 +4978,10 @@
   "findInAudiobookAfterLabel": "找到位置后",
   "findInAudiobookStay": "继续阅读",
   "findInAudiobookGoPlayer": "打开播放器",
-  "findInAudiobookPlaying": "正在播放有声书中的此段落..."
+  "findInAudiobookPlaying": "正在播放有声书中的此段落...",
+  "skipIntro": "跳过片头",
+  "skipOutro": "跳过片尾",
+  "skipIntroSettings": "片头跳过设置",
+  "skipOutroSettings": "片尾跳过设置",
+  "seconds": "秒"
 }

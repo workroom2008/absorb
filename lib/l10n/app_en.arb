@@ -1,6 +1,6 @@
 {
   "@@locale": "en",
-  "appTitle": "A B S O R B",
+  "appTitle": "胖虎听书",
   "online": "Online",
   "offline": "Offline",
   "stillOffline": "Still offline. Tap to try again.",
@@ -1034,6 +1034,25 @@
   "trustAllCertificatesOffSubtitle": "Off - only trusted certificates accepted",
   "supportTheDev": "Support the Dev",
   "buyMeACoffee": "Buy me a coffee",
+  "classicWording": "Classic wording",
+  "classicWordingAbsorbDescription": "Using \"Absorb\", \"Absorbing\", \"Fully Absorbed\"",
+  "lockRotation": "Lock rotation",
+  "screenCanRotate": "Screen can rotate with the device",
+  "duckBriefInterruptions": "Duck brief interruptions",
+  "autoDownloadSeries": "Auto-download series",
+  "previousChapter": "Previous chapter",
+  "nextChapter": "Next chapter",
+  "playerFailedToInitialize": "Player failed to initialize",
+  "couldNotConnectToServer": "Could not connect to server",
+  "couldNotStartTranscodedPlayback": "Could not start transcoded playback",
+  "noAudioFilesInTranscodedSession": "No audio files in transcoded session",
+  "previewEnding": "Preview ending",
+  "nothingListenedYet": "Nothing listened in {_yirYear} yet",
+  "@nothingListenedYet": {
+    "placeholders": {
+      "_yirYear": { "type": "String" }
+    }
+  },
   "appVersionFormat": "Absorb v{version}",
   "@appVersionFormat": {
     "placeholders": {
@@ -4867,5 +4886,10 @@
   "findInAudiobookAfterLabel": "When the spot is found",
   "findInAudiobookStay": "Keep reading",
   "findInAudiobookGoPlayer": "Open the player",
-  "findInAudiobookPlaying": "Playing this passage in the audiobook"
+  "findInAudiobookPlaying": "Playing this passage in the audiobook",
+  "skipIntro": "Skip intro",
+  "skipOutro": "Skip outro",
+  "skipIntroSettings": "Skip intro settings",
+  "skipOutroSettings": "Skip outro settings",
+  "seconds": "s"
 }

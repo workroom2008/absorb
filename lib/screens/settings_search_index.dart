@@ -125,15 +125,6 @@ List<SettingSearchEntry> settingsSearchEntries(BuildContext context) {
       SettingSearchEntry('Permissions', l.sectionPermissions, l.unrestrictedBattery, [l.unrestrictedBatterySubtitle]),
     ],
 
-    // ── Issues & Support ──
-    SettingSearchEntry('Issues & Support', l.sectionIssuesAndSupport, l.showTipsAgain, [l.showTipsAgainSubtitle]),
-    SettingSearchEntry('Issues & Support', l.sectionIssuesAndSupport, l.bugsAndFeatureRequests, [l.bugsAndFeatureRequestsSubtitle]),
-    SettingSearchEntry('Issues & Support', l.sectionIssuesAndSupport, l.joinDiscord, [l.joinDiscordSubtitle]),
-    SettingSearchEntry('Issues & Support', l.sectionIssuesAndSupport, l.contact, [l.contactSubtitle]),
-    SettingSearchEntry('Issues & Support', l.sectionIssuesAndSupport, l.enableLogging, [l.enableLoggingOnSubtitle, l.enableLoggingOffSubtitle]),
-    SettingSearchEntry('Issues & Support', l.sectionIssuesAndSupport, l.sendLogs, [l.sendLogsSubtitle]),
-    SettingSearchEntry('Issues & Support', l.sectionIssuesAndSupport, l.clearLogs, const []),
-
     // ── Advanced ──
     SettingSearchEntry('Advanced', l.sectionAdvanced, l.navHoldSettingTitle, [l.navHoldSettingSubtitle]),
     SettingSearchEntry('Advanced', l.sectionAdvanced, l.localServer, [l.localServerOnConnectedSubtitle, l.localServerOnRemoteSubtitle, l.localServerOffSubtitle, l.localServerUrlLabel]),

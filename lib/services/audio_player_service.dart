@@ -1478,6 +1478,11 @@ class AudioPlayerService extends ChangeNotifier {
   static const double _kLocalTruncationMarginSec = 60.0;
   int _lastNotifiedChapterIndex = -1;
   int _lastChapterCheckSec = -1;
+  // ── Skip intro/outro state ──
+  int _skipIntroSeconds = 0;
+  int _skipOutroSeconds = 0;
+  bool _introSkipAppliedForChapter = false;
+  bool _outroSkipTriggeredForChapter = false;
   StreamSubscription? _indexSub;
 
   // ── iOS premature-completion guard (GH #219) ──
@@ -2006,7 +2011,7 @@ class AudioPlayerService extends ChangeNotifier {
     }
   }
 
-  void _onAutoQueueAdvanced() {
+  Future<void> _onAutoQueueAdvanced() async {
     final next = _preloadedNextBook;
     if (next == null) return;
     if (_autoQueueAdvancing) return;
@@ -2034,6 +2039,14 @@ class AudioPlayerService extends ChangeNotifier {
     _metaDuration = _totalDuration;
     _chapters = (next['chapters'] as List<dynamic>?) ?? [];
     _handler?.updateChaptersQueue(_chapters);
+    // Load per-book skip intro/outro settings for the new book
+    final nextBookId = _currentEpisodeId != null
+        ? '$_currentItemId-$_currentEpisodeId'
+        : _currentItemId!;
+    _skipIntroSeconds = await PlayerSettings.getSkipIntro(nextBookId);
+    _skipOutroSeconds = await PlayerSettings.getSkipOutro(nextBookId);
+    _introSkipAppliedForChapter = false;
+    _outroSkipTriggeredForChapter = false;
     _trackStartOffsets = [0.0, _totalDuration];
     _currentTrackIndex = 0;
     _playbackSessionId = null;
@@ -2663,7 +2676,7 @@ class AudioPlayerService extends ChangeNotifier {
         builder: () => AudioPlayerHandler(),
         config: AudioServiceConfig(
           androidNotificationChannelId: 'com.audiobookshelf.app.channel.audio',
-          androidNotificationChannelName: 'Absorb',
+          androidNotificationChannelName: '胖虎听书',
           // Keep foreground service alive when paused — prevents Android from
           // killing audio after notification interruptions on locked screen.
           androidStopForegroundOnPause: false,
@@ -3284,6 +3297,12 @@ class AudioPlayerService extends ChangeNotifier {
     _chapters = chapters;
     _shortLocalDurationSec = null; // re-evaluated per source in _playFromLocal
     _handler?.updateChaptersQueue(chapters);
+    // Load per-book skip intro/outro settings
+    final bookId = episodeId != null ? '$itemId-$episodeId' : itemId;
+    _skipIntroSeconds = await PlayerSettings.getSkipIntro(bookId);
+    _skipOutroSeconds = await PlayerSettings.getSkipOutro(bookId);
+    _introSkipAppliedForChapter = false;
+    _outroSkipTriggeredForChapter = false;
     // New book = fresh session — clear any auto sleep dismissal
     SleepTimerService().resetDismiss();
 
@@ -4998,6 +5017,10 @@ class AudioPlayerService extends ChangeNotifier {
     _playVerifyTimer = null;
     _resetStuckDetection();
     _noisyPause = false;
+    _skipIntroSeconds = 0;
+    _skipOutroSeconds = 0;
+    _introSkipAppliedForChapter = false;
+    _outroSkipTriggeredForChapter = false;
     notifyListeners();
   }
 
@@ -5459,6 +5482,8 @@ class AudioPlayerService extends ChangeNotifier {
             _lastNotifiedChapterIndex = -1;
             _currentChapterStart = 0;
             _currentChapterEnd = _totalDuration;
+            _introSkipAppliedForChapter = false;
+            _outroSkipTriggeredForChapter = false;
             _pushMediaItem(
               _currentItemId!,
               _currentTitle ?? '',
@@ -5486,6 +5511,69 @@ class AudioPlayerService extends ChangeNotifier {
             // Force PlaybackState refresh so the notification position resets
             // to 0 immediately instead of waiting for the next stream event.
             if (_notifChapterMode) _handler?.refreshPlaybackState();
+            // Reset skip flags for new chapter
+            _introSkipAppliedForChapter = false;
+            _outroSkipTriggeredForChapter = false;
+          }
+        }
+
+        // ─── Skip intro on new chapter ──────────────────────
+        // When a chapter just started (position near its start), seek past
+        // the intro if the per-book skipIntro setting is configured.
+        if (_skipIntroSeconds > 0 &&
+            !_introSkipAppliedForChapter &&
+            _lastNotifiedChapterIndex >= 0 &&
+            _chapters.isNotEmpty &&
+            _player?.playing == true) {
+          final chapterOffset = posSec - _currentChapterStart;
+          final chapterDuration = _currentChapterEnd - _currentChapterStart;
+          // Only apply if position is within the first few seconds of the
+          // chapter and the chapter is long enough to have an intro to skip.
+          if (chapterOffset < 3.0 &&
+              chapterDuration > _skipIntroSeconds + 5) {
+            _introSkipAppliedForChapter = true;
+            final target = _currentChapterStart + _skipIntroSeconds;
+            debugPrint(
+              '[SkipIntro] Skipping ${_skipIntroSeconds}s intro at '
+              '${posSec.toStringAsFixed(1)}s -> ${target.toStringAsFixed(1)}s',
+            );
+            await _seekAbsolute(target);
+          }
+        }
+
+        // ─── Skip outro near chapter end ────────────────────
+        // When position approaches the end of the current chapter, seek to
+        // the next chapter (or trigger auto-advance if it's the last chapter).
+        if (_skipOutroSeconds > 0 &&
+            !_outroSkipTriggeredForChapter &&
+            _lastNotifiedChapterIndex >= 0 &&
+            _chapters.isNotEmpty &&
+            _player?.playing == true &&
+            _currentChapterEnd > 0) {
+          final remaining = _currentChapterEnd - posSec;
+          if (remaining > 0 && remaining <= _skipOutroSeconds) {
+            _outroSkipTriggeredForChapter = true;
+            // Try to advance to the next chapter
+            final nextIdx = _lastNotifiedChapterIndex + 1;
+            if (nextIdx < _chapters.length) {
+              final nextCh = _chapters[nextIdx] as Map<String, dynamic>;
+              final nextStart =
+                  (nextCh['start'] as num?)?.toDouble() ?? 0;
+              debugPrint(
+                '[SkipOutro] Skipping outro at '
+                '${posSec.toStringAsFixed(1)}s -> next chapter at '
+                '${nextStart.toStringAsFixed(1)}s',
+              );
+              await _seekAbsolute(nextStart);
+            } else {
+              // Last chapter — trigger auto-advance or completion
+              debugPrint(
+                '[SkipOutro] Last chapter outro reached at '
+                '${posSec.toStringAsFixed(1)}s',
+              );
+              _onPlaybackComplete();
+              return;
+            }
           }
         }
 

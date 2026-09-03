@@ -46,8 +46,8 @@ import '../l10n/app_localizations.dart';
 import '../services/wording.dart';
 import '../services/android_auto_service.dart';
 import '../services/carplay_service.dart';
-import '../widgets/expanded_card.dart';
 import 'absorbing_screen.dart';
+import 'player_screen.dart';
 import 'home_screen.dart';
 import 'library_screen.dart';
 import 'stats_screen.dart';
@@ -623,8 +623,8 @@ class _AppShellState extends State<AppShell>
     _expandedIsOpen = true;
     final nav = Navigator.of(context, rootNavigator: true);
     await nav.push(
-      ExpandedCardRoute(
-        child: ExpandedCard(item: item, player: _player),
+      PlayerScreenRoute(
+        child: PlayerScreen(item: item, player: _player),
       ),
     );
     // Route was popped — expanded view closed
