@@ -47,7 +47,6 @@ import '../widgets/overlay_toast.dart';
 import '../widgets/tips_sheet.dart';
 import '../widgets/feature_hint.dart';
 import '../widgets/welcome_sheet.dart';
-import '../widgets/rmab_config_sheet.dart';
 import '../widgets/server_connection_editor.dart';
 import '../widgets/server_admin_status_badges.dart';
 import '../l10n/app_localizations.dart';
@@ -187,8 +186,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
   late final TextEditingController _localServerController;
   bool _trustAllCerts = false;
   bool _includePreReleases = false;
-  String? _rmabBaseUrl;
-  String? _rmabApiToken;
   bool _loaded = false;
   int _adminIssueCount = 0;
   AudiobookshelfServerUpdate? _serverUpdate;
@@ -1021,8 +1018,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final notifSpeedBookmark = results[48] as bool;
     final lockSeek = results[49] as bool;
     final cardBg = results[50] as String;
-    final rmabBaseUrl = await ScopedPrefs.getString(kRmabBaseUrlKey);
-    final rmabApiToken = await ScopedPrefs.getString(kRmabApiTokenKey);
     final sleepRewind = await PlayerSettings.getSleepRewindSeconds();
     final lockPortrait = await PlayerSettings.getLockPortrait();
     final autoSeriesDownload = await PlayerSettings.getAutoSeriesDownloadDefault();
@@ -1041,8 +1036,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
       _sleepRewindSeconds = sleepRewind;
       _lockPortrait = lockPortrait;
       _autoSeriesDownloadDefault = autoSeriesDownload;
-      _rmabBaseUrl = rmabBaseUrl;
-      _rmabApiToken = rmabApiToken;
       _rewindSettings = s;
       _defaultSpeed = speed;
       _wifiOnlyDownloads = wifiOnly;
@@ -3902,18 +3895,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         } : null,
                       ),
                     ],
-                    const Divider(height: 1, indent: 16, endIndent: 16),
-                    ListTile(
-                      leading: Icon(Icons.menu_book_rounded, color: cs.primary),
-                      title: Text(l.adminRmab),
-                      subtitle: Text(
-                        ((_rmabBaseUrl ?? '').isNotEmpty && (_rmabApiToken ?? '').isNotEmpty)
-                            ? l.adminRmabConnected
-                            : l.adminRmabAskAdmin,
-                        style: tt.bodySmall?.copyWith(color: cs.onSurfaceVariant)),
-                      trailing: Icon(Icons.chevron_right_rounded, color: cs.onSurfaceVariant.withValues(alpha: 0.5)),
-                      onTap: _openRmabSheetFromSettings,
-                    ),
                   ],
                 ),
                 const SizedBox(height: 16),
@@ -4556,32 +4537,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     if (player.hasBook) {
       await player.pause();
       await player.stop();
-    }
-  }
-
-  Future<void> _openRmabSheetFromSettings() async {
-    final l = AppLocalizations.of(context)!;
-    final isAdmin = context.read<AuthProvider>().isAdmin;
-    final result =
-        await showRmabConfigSheet(context, isAdminContext: isAdmin);
-    if (!mounted || result == null) return;
-    if (result.changed || result.disconnected) {
-      final base = await ScopedPrefs.getString(kRmabBaseUrlKey);
-      final token = await ScopedPrefs.getString(kRmabApiTokenKey);
-      if (!mounted) return;
-      setState(() {
-        _rmabBaseUrl = base;
-        _rmabApiToken = token;
-      });
-      showOverlayToast(
-        context,
-        result.disconnected
-            ? l.rmabConfigDisconnectedSnackbar
-            : l.rmabConfigSavedSnackbar,
-        icon: result.disconnected
-            ? Icons.link_off_rounded
-            : Icons.check_circle_outline_rounded,
-      );
     }
   }
 
