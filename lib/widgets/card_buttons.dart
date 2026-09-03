@@ -1422,7 +1422,7 @@ class CardActionDelegate {
     int introVal = await PlayerSettings.getSkipIntro(currentItemId);
     int outroVal = await PlayerSettings.getSkipOutro(currentItemId);
 
-    if (!mounted) return;
+    if (!context.mounted) return;
 
     showModalBottomSheet(
       context: context,
