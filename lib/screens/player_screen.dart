@@ -482,7 +482,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
         _episodeId != null ? '$_itemId-$_episodeId' : _itemId);
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 32),
+      padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
@@ -520,22 +520,33 @@ class _PlayerScreenState extends State<PlayerScreen> {
   }) {
     return GestureDetector(
       onTap: onTap,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon,
-              color: color ??
-                  Colors.white.withValues(alpha: 0.7),
-              size: 24),
-          const SizedBox(height: 4),
-          Text(
-            label,
-            style: TextStyle(
-              color: Colors.white.withValues(alpha: 0.5),
-              fontSize: 11,
-            ),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        decoration: BoxDecoration(
+          color: Colors.white.withValues(alpha: 0.08),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: Colors.white.withValues(alpha: 0.1),
+            width: 1,
           ),
-        ],
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon,
+                color: color ?? Colors.white.withValues(alpha: 0.8),
+                size: 22),
+            const SizedBox(height: 6),
+            Text(
+              label,
+              style: TextStyle(
+                color: Colors.white.withValues(alpha: 0.6),
+                fontSize: 11,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -543,34 +554,46 @@ class _PlayerScreenState extends State<PlayerScreen> {
   Widget _speedButton(AppLocalizations l) {
     return GestureDetector(
       onTap: () => _showSpeedPicker(l),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.15),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Text(
-              '${_speed.toStringAsFixed(1)}x',
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 13,
-                fontWeight: FontWeight.bold,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        decoration: BoxDecoration(
+          color: _accentColor.withValues(alpha: 0.2),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: _accentColor.withValues(alpha: 0.3),
+            width: 1,
+          ),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              decoration: BoxDecoration(
+                color: _accentColor.withValues(alpha: 0.3),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Text(
+                '${_speed.toStringAsFixed(1)}x',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 13,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            l.speed,
-            style: TextStyle(
-              color: Colors.white.withValues(alpha: 0.5),
-              fontSize: 11,
+            const SizedBox(height: 6),
+            Text(
+              l.speed,
+              style: TextStyle(
+                color: Colors.white.withValues(alpha: 0.6),
+                fontSize: 11,
+                fontWeight: FontWeight.w500,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -786,20 +809,20 @@ class _PlayerScreenState extends State<PlayerScreen> {
         durSec > 0 ? (posSec / durSec).clamp(0.0, 1.0) : 0.0;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
         children: [
           SliderTheme(
             data: SliderThemeData(
               activeTrackColor: _accentColor,
               inactiveTrackColor:
-                  Colors.white.withValues(alpha: 0.25),
-              thumbColor: _accentColor,
+                  Colors.white.withValues(alpha: 0.2),
+              thumbColor: Colors.white,
               thumbShape:
-                  const RoundSliderThumbShape(enabledThumbRadius: 6),
-              trackHeight: 3,
+                  const RoundSliderThumbShape(enabledThumbRadius: 7),
+              trackHeight: 4,
               overlayShape:
-                  const RoundSliderOverlayShape(overlayRadius: 14),
+                  const RoundSliderOverlayShape(overlayRadius: 16),
             ),
             child: Slider(
               value: progress,
@@ -811,7 +834,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 4),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -840,17 +863,16 @@ class _PlayerScreenState extends State<PlayerScreen> {
                           horizontal: 12),
                       child: Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 6, vertical: 1),
+                            horizontal: 6, vertical: 2),
                         decoration: BoxDecoration(
                           color:
-                              Colors.white.withValues(alpha: 0.1),
+                              _accentColor.withValues(alpha: 0.3),
                           borderRadius: BorderRadius.circular(4),
                         ),
                         child: Text(
                           '超高',
                           style: TextStyle(
-                            color: Colors.white
-                                .withValues(alpha: 0.4),
+                            color: Colors.white,
                             fontSize: 9,
                             fontWeight: FontWeight.bold,
                           ),
@@ -885,24 +907,31 @@ class _PlayerScreenState extends State<PlayerScreen> {
   }
 
   Widget _skipButton(IconData icon, String label) {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        Icon(icon,
-            size: 36,
-            color: Colors.white.withValues(alpha: 0.5)),
-        Padding(
-          padding: const EdgeInsets.only(top: 2),
-          child: Text(
-            label,
-            style: TextStyle(
-              fontSize: 9,
-              fontWeight: FontWeight.w900,
-              color: Colors.white.withValues(alpha: 0.5),
+    return Container(
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.08),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          Icon(icon,
+              size: 32,
+              color: Colors.white.withValues(alpha: 0.7)),
+          Padding(
+            padding: const EdgeInsets.only(top: 2),
+            child: Text(
+              label,
+              style: TextStyle(
+                fontSize: 9,
+                fontWeight: FontWeight.w900,
+                color: Colors.white.withValues(alpha: 0.7),
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -914,28 +943,22 @@ class _PlayerScreenState extends State<PlayerScreen> {
         !widget.player.isPlaying;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 32),
+      padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           // Playlist
           GestureDetector(
             onTap: () {},
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.queue_music_rounded,
-                    color: Colors.white.withValues(alpha: 0.6),
-                    size: 24),
-                const SizedBox(height: 4),
-                Text(
-                  '播放列表',
-                  style: TextStyle(
-                    color: Colors.white.withValues(alpha: 0.5),
-                    fontSize: 11,
-                  ),
-                ),
-              ],
+            child: Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.white.withValues(alpha: 0.06),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(Icons.queue_music_rounded,
+                  color: Colors.white.withValues(alpha: 0.6),
+                  size: 24),
             ),
           ),
           // Previous chapter
@@ -943,21 +966,15 @@ class _PlayerScreenState extends State<PlayerScreen> {
             onTap: _isActive
                 ? widget.player.skipToPreviousChapter
                 : null,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.skip_previous_rounded,
-                    color: Colors.white.withValues(alpha: 0.8),
-                    size: 32),
-                const SizedBox(height: 4),
-                Text(
-                  '上一曲',
-                  style: TextStyle(
-                    color: Colors.white.withValues(alpha: 0.5),
-                    fontSize: 11,
-                  ),
-                ),
-              ],
+            child: Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.white.withValues(alpha: 0.06),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(Icons.skip_previous_rounded,
+                  color: Colors.white.withValues(alpha: 0.8),
+                  size: 28),
             ),
           ),
           // Play/Pause (large - 2x size)
@@ -971,12 +988,20 @@ class _PlayerScreenState extends State<PlayerScreen> {
               height: 72,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: _accentColor,
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    _accentColor,
+                    _accentColor.withValues(alpha: 0.8),
+                  ],
+                ),
                 boxShadow: [
                   BoxShadow(
-                    color: _accentColor.withValues(alpha: 0.4),
-                    blurRadius: 20,
-                    spreadRadius: -3,
+                    color: _accentColor.withValues(alpha: 0.5),
+                    blurRadius: 24,
+                    spreadRadius: -4,
+                    offset: const Offset(0, 4),
                   ),
                 ],
               ),
@@ -1005,21 +1030,15 @@ class _PlayerScreenState extends State<PlayerScreen> {
             onTap: _isActive
                 ? widget.player.skipToNextChapter
                 : null,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.skip_next_rounded,
-                    color: Colors.white.withValues(alpha: 0.8),
-                    size: 32),
-                const SizedBox(height: 4),
-                Text(
-                  '下一曲',
-                  style: TextStyle(
-                    color: Colors.white.withValues(alpha: 0.5),
-                    fontSize: 11,
-                  ),
-                ),
-              ],
+            child: Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.white.withValues(alpha: 0.06),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(Icons.skip_next_rounded,
+                  color: Colors.white.withValues(alpha: 0.8),
+                  size: 28),
             ),
           ),
           // Sleep timer
@@ -1028,21 +1047,15 @@ class _PlayerScreenState extends State<PlayerScreen> {
               showSleepTimerSheet(
                   context, _accentColor);
             },
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.bedtime_outlined,
-                    color: Colors.white.withValues(alpha: 0.6),
-                    size: 24),
-                const SizedBox(height: 4),
-                Text(
-                  '睡眠定时',
-                  style: TextStyle(
-                    color: Colors.white.withValues(alpha: 0.5),
-                    fontSize: 11,
-                  ),
-                ),
-              ],
+            child: Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.white.withValues(alpha: 0.06),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(Icons.bedtime_outlined,
+                  color: Colors.white.withValues(alpha: 0.6),
+                  size: 24),
             ),
           ),
         ],
