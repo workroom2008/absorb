@@ -374,7 +374,6 @@ class _AppShellState extends State<AppShell>
     context.read<LibraryProvider>().addListener(_onLibraryChanged);
     _loadPodcastTabPrefs();
     PlayerSettings.settingsChanged.addListener(_loadPodcastTabPrefs);
-    WelcomeSheet.showIfNeeded(context);
     _checkForUpdate();
   }
 
