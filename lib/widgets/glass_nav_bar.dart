@@ -49,7 +49,7 @@ class GlassNavBar extends StatelessWidget {
         ? Colors.white.withValues(alpha: 0.10)
         : Colors.black.withValues(alpha: 0.10);
 
-    final effectiveGlassIcons = glassIcons ?? _defaultGlassIcons;
+    final effectiveGlassIcons = glassIcons ?? icons;
 
     return SafeArea(
       top: false,

@@ -1149,7 +1149,7 @@ class PlayerSettings {
     }
   }
 
-  static Future<bool> getCardIconsOnly() => _get('card_icons_only', false);
+  static Future<bool> getCardIconsOnly() => _get('card_icons_only', true);
   static Future<void> setCardIconsOnly(bool v) async { await _set('card_icons_only', v); _notify(); }
 
   static Future<bool> getCardSingleRow() => _get('card_single_row', false);

@@ -1754,12 +1754,6 @@ class CardActionDelegate {
           accent: accent, isActive: true, alwaysEnabled: true, large: large, compact: compact, iconsOnly: iconsOnly,
           onTap: () => openCarMode(context),
         );
-      case 'notes':
-        return CardWideButton(
-          icon: Icons.note_rounded, label: l.notes,
-          accent: accent, isActive: true, alwaysEnabled: true, large: large, compact: compact, iconsOnly: iconsOnly,
-          onTap: () => showNotes(context, accent),
-        );
       case 'download':
         return CardWideButton(
           icon: Icons.download_outlined, label: l.download,
@@ -1769,22 +1763,6 @@ class CardActionDelegate {
             title: title, author: author, coverUrl: coverUrl,
             accent: accent, large: large, compact: compact, iconsOnly: iconsOnly,
           ),
-        );
-      case 'ebook':
-        return CardWideButton(
-          icon: isEbookPdf ? Icons.picture_as_pdf_rounded : Icons.menu_book_rounded,
-          label: 'Read',
-          accent: accent, isActive: true, alwaysEnabled: true, large: large, compact: compact, iconsOnly: iconsOnly,
-          // The card handles the no-ebook case itself (it retries the item
-          // fetch before toasting).
-          onTap: () => onEbookTap?.call(),
-        );
-      case 'findinebook':
-        return CardWideButton(
-          icon: Icons.manage_search_rounded,
-          label: l.findInEbook,
-          accent: accent, isActive: true, alwaysEnabled: true, large: large, compact: compact, iconsOnly: iconsOnly,
-          onTap: () => onFindInEbookTap?.call(),
         );
       default:
         return const SizedBox.shrink();
@@ -1891,11 +1869,6 @@ class CardActionDelegate {
           icon: Icons.directions_car_rounded, label: l.carModeTitle, accent: accent,
           onTap: () { Navigator.pop(ctx); openCarMode(context); },
         );
-      case 'notes':
-        return MoreMenuItem(
-          icon: Icons.note_rounded, label: l.notes, accent: accent,
-          onTap: () { Navigator.pop(ctx); showNotes(context, accent); },
-        );
       case 'download':
         return ListenableBuilder(
           listenable: DownloadService(),
@@ -1951,24 +1924,6 @@ class CardActionDelegate {
             );
           },
         );
-      case 'ebook':
-        return MoreMenuItem(
-          icon: isEbookPdf ? Icons.picture_as_pdf_rounded : Icons.menu_book_rounded,
-          label: 'Read', accent: accent,
-          onTap: () {
-            Navigator.pop(ctx);
-            onEbookTap?.call();
-          },
-        );
-      case 'findinebook':
-        return MoreMenuItem(
-          icon: Icons.manage_search_rounded,
-          label: l.findInEbook, accent: accent,
-          onTap: () {
-            Navigator.pop(ctx);
-            onFindInEbookTap?.call();
-          },
-        );
       default:
         return const SizedBox.shrink();
     }
@@ -1990,10 +1945,6 @@ class CardActionDelegate {
         onReorder: (order, newCount) => onReorder(order, newCount),
       ),
     );
-  }
-
-  void showNotes(BuildContext ctx, Color accent) {
-    NotesSheet.show(ctx, itemId: itemId, itemTitle: title, accent: accent);
   }
 
   void openCarMode(BuildContext ctx) {

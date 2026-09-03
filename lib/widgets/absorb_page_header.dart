@@ -56,10 +56,9 @@ class AbsorbPageHeader extends StatelessWidget {
                     if (shouldShowBranding)
                       Text(
                         l.appTitle,
-                        style: tt.labelSmall?.copyWith(
+                        style: tt.titleLarge?.copyWith(
                           color: bColor,
-                          letterSpacing: 4,
-                          fontWeight: FontWeight.w300,
+                          fontWeight: FontWeight.w700,
                         ),
                       )
                     else

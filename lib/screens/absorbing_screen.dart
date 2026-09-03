@@ -773,10 +773,9 @@ class _AbsorbingScreenState extends State<AbsorbingScreen> {
               children: [
                 Text(
                   l.appTitle,
-                  style: tt.labelSmall?.copyWith(
+                  style: tt.titleLarge?.copyWith(
                     color: cs.onSurfaceVariant,
-                    letterSpacing: 4,
-                    fontWeight: FontWeight.w300,
+                    fontWeight: FontWeight.w700,
                   ),
                 ),
                 const SizedBox(width: 8),
@@ -844,72 +843,17 @@ class _AbsorbingScreenState extends State<AbsorbingScreen> {
                   ? Center(child: CircularProgressIndicator(strokeWidth: 2, color: cs.onSurface.withValues(alpha: 0.24)))
                   : books.isEmpty
                       ? _emptyState(cs, tt, effectiveOffline, l)
-                      : books.length == 1
-                          ? LayoutBuilder(
-                              builder: (context, constraints) {
-                                final vPad = isPhoneLandscape
-                                    ? 0.0
-                                    : (constraints.maxHeight * 0.01).clamp(2.0, 16.0);
-                                final hPad = isPhoneLandscape ? 0.0 : 4.0;
-                                return Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: hPad, vertical: vPad),
-                                  child: RepaintBoundary(child: AbsorbingCard(key: _cardKey(_absorbingKey(books[0])), item: books[0], player: _player)),
-                                );
-                              },
-                            )
-                          : PageView.builder(
-                          controller: _pageController,
-                          scrollDirection: Axis.horizontal,
-                          clipBehavior: Clip.none,
-                          physics: const PageScrollPhysics(parent: ClampingScrollPhysics()),
-                          itemCount: books.length,
-                          itemBuilder: (_, i) => LayoutBuilder(
-                            builder: (context, constraints) {
-                              final cardWidth = constraints.maxWidth;
-                              final vPad = isPhoneLandscape
-                                  ? 0.0
-                                  : (constraints.maxHeight * 0.01).clamp(2.0, 16.0);
-                              final hPad = isPhoneLandscape ? 0.0 : 4.0;
-                              return AnimatedBuilder(
-                                animation: _pageController,
-                                builder: (context, child) {
-                                  double distFromCenter = 0.0;
-                                  double rawDist = 0.0;
-                                  if (_pageController.hasClients && _pageController.positions.length == 1 && _pageController.position.haveDimensions) {
-                                    final page = _pageController.page ?? _pageController.initialPage.toDouble();
-                                    rawDist = page - i; // negative = card is to the right
-                                    distFromCenter = rawDist.abs();
-                                  }
-                                  final double scaleX;
-                                  if (distFromCenter >= 1.0) {
-                                    scaleX = 0.85;
-                                  } else {
-                                    // Use easeOut curve for smoother transition
-                                    final t = Curves.easeOut.transform(1.0 - distFromCenter);
-                                    scaleX = 0.85 + (t * 0.15); // 0.85 → 1.0
-                                  }
-                                  // Calculate how much space the squeeze frees up, then translate toward center
-                                  final squeezedWidth = cardWidth * scaleX;
-                                  final freedSpace = cardWidth - squeezedWidth;
-                                  // Pull card toward center by half the freed space
-                                  final direction = rawDist > 0 ? 1.0 : (rawDist < 0 ? -1.0 : 0.0);
-                                  final translateX = direction * freedSpace * 0.45;
-
-                                  return Transform(
-                                    alignment: Alignment.center,
-                                    transform: Matrix4.identity()
-                                      ..translate(translateX, 0.0, 0.0)
-                                      ..scale(scaleX, 1.0, 1.0),
-                                    child: Padding(
-                                      padding: EdgeInsets.symmetric(horizontal: hPad, vertical: vPad),
-                                      child: child,
-                                    ),
-                                  );
-                                },
-                                child: RepaintBoundary(child: AbsorbingCard(key: _cardKey(_absorbingKey(books[i])), item: books[i], player: _player)),
-                              );
-                            },
-                          ),
+                      : LayoutBuilder(
+                          builder: (context, constraints) {
+                            final vPad = isPhoneLandscape
+                                ? 0.0
+                                : (constraints.maxHeight * 0.01).clamp(2.0, 16.0);
+                            final hPad = isPhoneLandscape ? 0.0 : 4.0;
+                            return Padding(
+                              padding: EdgeInsets.symmetric(horizontal: hPad, vertical: vPad),
+                              child: RepaintBoundary(child: AbsorbingCard(key: _cardKey(_absorbingKey(books[0])), item: books[0], player: _player)),
+                            );
+                          },
                         ),
             ),
           ],

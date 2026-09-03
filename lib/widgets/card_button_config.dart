@@ -37,14 +37,8 @@ String localizedCardButtonLabel(AppLocalizations l, CardButtonDef def) {
       return classicWordingNotifier.value ? 'Remove from Now Playing' : l.removeFromAbsorbing;
     case 'car':
       return l.carModeTitle;
-    case 'notes':
-      return l.notes;
     case 'download':
       return l.download;
-    case 'ebook':
-      return 'Read';
-    case 'findinebook':
-      return l.findInEbook;
   }
   return def.label;
 }
@@ -72,10 +66,7 @@ const _allCardButtons = [
   CardButtonDef('history', 'Playback History', Icons.history_rounded),
   CardButtonDef('remove', 'Remove from Absorbing', Icons.remove_circle_outline_rounded),
   CardButtonDef('car', 'Car Mode', Icons.directions_car_rounded),
-  CardButtonDef('notes', 'Notes', Icons.note_rounded),
   CardButtonDef('download', 'Download', Icons.download_outlined),
-  CardButtonDef('ebook', 'Read', Icons.menu_book_rounded),
-  CardButtonDef('findinebook', 'Find position in ebook', Icons.manage_search_rounded),
 ];
 
 /// Card buttons filtered for the current platform.

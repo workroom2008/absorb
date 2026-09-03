@@ -477,7 +477,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
     );
   }
 
-  // ── Function buttons row: Download, Speed, Bookmark, Notes, More ──
+  // ── Function buttons row: Download, Speed, Bookmark, Skip Intro/Outro, More ──
   Widget _buildFunctionButtons(AppLocalizations l) {
     final isDownloaded = DownloadService().isDownloaded(
         _episodeId != null ? '$_itemId-$_episodeId' : _itemId);
@@ -504,15 +504,10 @@ class _PlayerScreenState extends State<PlayerScreen> {
             },
           ),
           _funcButton(
-            icon: Icons.note_alt_outlined,
-            label: l.notes,
+            icon: Icons.skip_next_rounded,
+            label: l.skipIntroSettings,
             onTap: () {
-              NotesSheet.show(
-                context,
-                itemId: _itemId,
-                itemTitle: _title,
-                accent: _accentColor,
-              );
+              _showSkipIntroOutroSettings(l);
             },
           ),
           _funcButton(
