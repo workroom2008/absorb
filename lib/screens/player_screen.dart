@@ -13,7 +13,6 @@ import '../services/audio_player_service.dart';
 import '../services/download_service.dart';
 import '../services/chromecast_service.dart';
 import '../widgets/book_detail_sheet.dart';
-import '../widgets/notes_sheet.dart';
 import '../widgets/overlay_toast.dart';
 import '../widgets/sleep_timer_sheet.dart';
 

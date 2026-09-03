@@ -21,8 +21,6 @@ String localizedCardButtonLabel(AppLocalizations l, CardButtonDef def) {
       return l.speed;
     case 'sleep':
       return l.timer;
-    case 'bookmarks':
-      return l.bookmarks;
     case 'details':
       return l.bookDetailsLabel;
     case 'equalizer':
@@ -58,7 +56,6 @@ const _allCardButtons = [
   CardButtonDef('chapters', 'Chapters', Icons.list_rounded),
   CardButtonDef('speed', 'Speed', Icons.speed_rounded),
   CardButtonDef('sleep', 'Timer', Icons.nightlight_round_outlined),
-  CardButtonDef('bookmarks', 'Bookmarks', Icons.bookmark_outline_rounded),
   CardButtonDef('details', 'Book Details', Icons.info_outline_rounded),
   CardButtonDef('equalizer', 'Equalizer', Icons.equalizer_rounded),
   CardButtonDef('cast', 'Cast to Device', Icons.cast_rounded),

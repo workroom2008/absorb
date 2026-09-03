@@ -26,7 +26,7 @@ import '../widgets/update_dialog.dart';
 import '../widgets/nav_hold_options.dart';
 import '../screens/admin_screen.dart';
 import '../screens/downloads_screen.dart';
-import '../screens/bookmarks_screen.dart';
+
 import '../screens/backup_sync_screen.dart';
 import '../services/settings_sync_service.dart';
 import '../screens/change_password_screen.dart';
@@ -2932,20 +2932,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           PlayerSettings.setDuckBriefInterruptions(v);
                         } : null,
                       ),
-                      const Divider(height: 1, indent: 16, endIndent: 16),
-                      SwitchListTile(
-                        title: Text(l.speedBookmarkInControls),
-                        subtitle: Text(
-                          _notifSpeedBookmark
-                              ? l.speedBookmarkOnSubtitle
-                              : l.speedBookmarkOffSubtitle,
-                          style: tt.bodySmall?.copyWith(color: cs.onSurfaceVariant)),
-                        value: _notifSpeedBookmark,
-                        onChanged: _loaded ? (v) {
-                          setState(() => _notifSpeedBookmark = v);
-                          PlayerSettings.setMediaControlsSpeedBookmark(v);
-                        } : null,
-                      ),
                     ],
                   ],
                 ),
@@ -3961,26 +3947,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
 
                 const SizedBox(height: 10),
-
-                // ── All Bookmarks ──
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Card(
-                    elevation: 0,
-                    color: cs.surfaceContainerHigh,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-                    child: ListTile(
-                      leading: Icon(Icons.bookmarks_rounded, color: cs.primary),
-                      title: Text(l.allBookmarks),
-                      subtitle: Text(l.allBookmarksSubtitle,
-                        style: tt.bodySmall?.copyWith(color: cs.onSurfaceVariant)),
-                      trailing: Icon(Icons.chevron_right_rounded, color: cs.onSurfaceVariant),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-                      onTap: () => Navigator.push(context,
-                        MaterialPageRoute(builder: (_) => const BookmarksScreen())),
-                    ),
-                  ),
-                ),
 
                 // ── Version Info ──
                 Center(child: Row(
