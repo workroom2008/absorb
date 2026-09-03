@@ -836,12 +836,12 @@ class _AppShellState extends State<AppShell>
     final lib = context.read<LibraryProvider>();
     final isPodcast = !podcastsShown && lib.isPodcastLibrary;
     final baseLabels = [
-      '',
-      '',
-      if (podcastsShown) '',
-      '',
-      '',
-      '',
+      isPodcast ? l.appShellDiscoverTab : l.appShellHomeTab,
+      isPodcast ? l.appShellShowsTab : l.appShellLibraryTab,
+      if (podcastsShown) l.appShellPodcastsTab,
+      Wording.of(context).appShellAbsorbingTab,
+      l.appShellStatsTab,
+      l.appShellSettingsTab,
     ];
     return baseLabels;
   }

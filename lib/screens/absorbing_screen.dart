@@ -760,13 +760,8 @@ class _AbsorbingScreenState extends State<AbsorbingScreen> {
             ],
           ];
 
-          final pageDots = books.length > 1
-              ? _PageDots(count: books.length, controller: _pageController)
-              : null;
-
           // Compact phone header: one row containing the ABSORB branding,
-          // offline icon, page dots, and actions. Skips the large "Absorbing"
-          // title row to give the card more vertical breathing room.
+          // offline icon, and actions.
           final compactHeader = Padding(
             padding: const EdgeInsets.fromLTRB(20, 6, 20, 2),
             child: Row(
@@ -780,22 +775,29 @@ class _AbsorbingScreenState extends State<AbsorbingScreen> {
                 ),
                 const SizedBox(width: 8),
                 offlineIcon,
-                if (pageDots != null) ...[
-                  const SizedBox(width: 12),
-                  Expanded(child: pageDots),
-                  const SizedBox(width: 12),
-                ] else
-                  const Spacer(),
+                const Spacer(),
                 ...headerActions,
               ],
             ),
           );
 
-          final fullHeader = AbsorbPageHeader(
-            title: Wording.of(context).absorbingTitle,
+          final fullHeader = Padding(
             padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
-            trailing: offlineIcon,
-            actions: headerActions,
+            child: Row(
+              children: [
+                Text(
+                  l.appTitle,
+                  style: tt.titleLarge?.copyWith(
+                    color: cs.onSurfaceVariant,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                offlineIcon,
+                const Spacer(),
+                ...headerActions,
+              ],
+            ),
           );
 
         return Column(
@@ -830,12 +832,6 @@ class _AbsorbingScreenState extends State<AbsorbingScreen> {
                     );
                   }),
                 ),
-              ),
-            // ── Page Dots (the compact landscape header inlines them) ──
-            if (!isPhoneLandscape && pageDots != null)
-              Padding(
-                padding: const EdgeInsets.only(top: 4, bottom: 2),
-                child: pageDots,
               ),
             // ── Cards (refreshable) ──
             Expanded(
@@ -950,69 +946,6 @@ class _AbsorbingScreenState extends State<AbsorbingScreen> {
         ),
       ),
     );
-  }
-}
-
-// ─── PAGE DOTS ──────────────────────────────────────────────
-
-class _PageDots extends StatelessWidget {
-  final int count;
-  final PageController controller;
-  const _PageDots({required this.count, required this.controller});
-
-  @override
-  Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
-    return LayoutBuilder(builder: (context, constraints) {
-      // Active dot is 20 wide, inactive is 6, each has horizontal padding on both sides.
-      // Solve for padding: count * (6 + 2*pad) + (20 - 6) <= maxWidth
-      // pad = (maxWidth - 14 - count * 6) / (count * 2)
-      const double dotSize = 6;
-      const double activeDotWidth = 20;
-      final maxWidth = constraints.maxWidth;
-      final extraActive = activeDotWidth - dotSize;
-      final available = maxWidth - extraActive - count * dotSize;
-      final hPad = (available / (count * 2)).clamp(1.5, 8.0);
-
-      return ListenableBuilder(
-        listenable: controller,
-        builder: (_, __) {
-          final page = controller.hasClients && controller.positions.length == 1 ? (controller.page ?? 0).round() : 0;
-          // The compact phone header can leave less width than the dots'
-          // minimum footprint (padding bottoms out at 1.5); an unclipped Row
-          // then paints under the Stop button. Scale the whole strip down
-          // instead when it genuinely doesn't fit.
-          return FittedBox(
-            fit: BoxFit.scaleDown,
-            child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: List.generate(count, (i) {
-              final active = i == page;
-              return GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onTap: () => controller.animateToPage(i,
-                  duration: const Duration(milliseconds: 400),
-                  curve: Curves.easeOutCubic),
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: hPad, vertical: 12),
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.easeOutCubic,
-                    width: active ? activeDotWidth : dotSize,
-                    height: dotSize,
-                    decoration: BoxDecoration(
-                      color: active ? cs.onSurface.withValues(alpha: 0.54) : cs.onSurface.withValues(alpha: 0.15),
-                      borderRadius: BorderRadius.circular(3),
-                    ),
-                  ),
-                ),
-              );
-            }),
-            ),
-          );
-        },
-      );
-    });
   }
 }
 
