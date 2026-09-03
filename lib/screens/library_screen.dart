@@ -564,7 +564,7 @@ class LibraryScreenState extends State<LibraryScreen>
       });
 
       // Rebuild tab controller if library type changed
-      final needsTabs = !lib.isPodcastLibrary;
+      final needsTabs = false; // Always hide tabs for cleaner UI
       final hasTabs = _tabController != null;
       if (needsTabs != hasTabs) {
         _tabController?.removeListener(_onTabChanged);
