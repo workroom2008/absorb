@@ -867,7 +867,7 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String get statsTitle => '你的统计';
+  String get statsTitle => '统计';
 
   @override
   String get statsCouldNotLoad => '无法加载统计数据';
