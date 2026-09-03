@@ -740,7 +740,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       case 'heatmap': return l.statsChartHeatmap;
       case 'dayofweek': return l.statsDayOfWeek;
       case 'top': return l.statsMostListened;
-      case 'yearreview': return 'Year in Review';
+      case 'yearreview': return '年度回顾';
     }
     return id;
   }
@@ -1987,11 +1987,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     ),
                     const Divider(height: 1, indent: 16, endIndent: 16),
                     SwitchListTile(
-                      title: const Text('Classic wording'),
+                      title: const Text('经典用词'),
                       subtitle: Text(
                         _classicWording
-                            ? 'Using "Play", "Now Playing", "Finished"'
-                            : 'Using "Absorb", "Absorbing", "Fully Absorbed"',
+                            ? '使用"播放"、"正在播放"、"已完成"'
+                            : '使用"吸收"、"正在吸收"、"完全吸收"',
                         style: tt.bodySmall?.copyWith(color: cs.onSurfaceVariant)),
                       value: _classicWording,
                       onChanged: _loaded ? (v) {
@@ -2005,11 +2005,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     if (!(Platform.isIOS && MediaQuery.sizeOf(context).shortestSide >= 600)) ...[
                       const Divider(height: 1, indent: 16, endIndent: 16),
                       SwitchListTile(
-                        title: const Text('Lock rotation'),
+                        title: const Text('锁定屏幕方向'),
                         subtitle: Text(
                           _lockPortrait
-                              ? 'Screen stays in portrait'
-                              : 'Screen can rotate with the device',
+                              ? '屏幕保持竖屏'
+                              : '屏幕随设备旋转',
                           style: tt.bodySmall?.copyWith(color: cs.onSurfaceVariant)),
                         value: _lockPortrait,
                         onChanged: _loaded ? (v) {
@@ -2920,11 +2920,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     if (Platform.isAndroid) ...[
                       const Divider(height: 1, indent: 16, endIndent: 16),
                       SwitchListTile(
-                        title: const Text('Duck brief interruptions'),
+                        title: const Text('短暂中断时降低音量'),
                         subtitle: Text(
                           _duckBriefInterruptions
-                              ? 'Notifications and prompts lower the volume instead of pausing'
-                              : 'Notifications and prompts pause playback',
+                              ? '通知和提示降低音量而不是暂停'
+                              : '通知和提示暂停播放',
                           style: tt.bodySmall?.copyWith(color: cs.onSurfaceVariant)),
                         value: _duckBriefInterruptions,
                         onChanged: _loaded ? (v) {
@@ -3355,11 +3355,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     ),
                     const Divider(height: 1, indent: 16, endIndent: 16),
                     SwitchListTile(
-                      title: const Text('Auto-download series'),
+                      title: const Text('自动下载系列'),
                       subtitle: Text(
                         _autoSeriesDownloadDefault
-                            ? 'Starting a book in a series keeps the next books downloaded'
-                            : 'Turn on series downloads yourself from the series menu',
+                            ? '开始阅读系列中的书籍时，自动下载后续书籍'
+                            : '请从系列菜单中手动开启系列下载',
                         style: tt.bodySmall?.copyWith(color: cs.onSurfaceVariant)),
                       value: _autoSeriesDownloadDefault,
                       onChanged: _loaded ? (v) {

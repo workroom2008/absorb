@@ -477,7 +477,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
     );
   }
 
-  // ── Function buttons row: Download, Speed, Bookmark, Skip Intro/Outro, More ──
+  // ── Function buttons row: Download, Speed, Skip Intro/Outro, More ──
   Widget _buildFunctionButtons(AppLocalizations l) {
     final isDownloaded = DownloadService().isDownloaded(
         _episodeId != null ? '$_itemId-$_episodeId' : _itemId);
@@ -496,13 +496,6 @@ class _PlayerScreenState extends State<PlayerScreen> {
             onTap: () {},
           ),
           _speedButton(l),
-          _funcButton(
-            icon: Icons.bookmark_border_rounded,
-            label: l.bookmark,
-            onTap: () {
-              _showBookmarkDialog(l);
-            },
-          ),
           _funcButton(
             icon: Icons.skip_next_rounded,
             label: l.skipIntroSettings,
@@ -631,14 +624,6 @@ class _PlayerScreenState extends State<PlayerScreen> {
           ],
         ),
       ),
-    );
-  }
-
-  void _showBookmarkDialog(AppLocalizations l) {
-    showOverlayToast(
-      context,
-      l.bookmark,
-      icon: Icons.bookmark_added_rounded,
     );
   }
 
