@@ -1169,7 +1169,7 @@ class PlayerSettings {
   /// account scope is active — and so all profiles on the device share one UI language.
   static Future<String> getLanguage() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getString('language') ?? '';
+    return prefs.getString('language') ?? 'zh';
   }
   static Future<void> setLanguage(String value) async {
     final prefs = await SharedPreferences.getInstance();

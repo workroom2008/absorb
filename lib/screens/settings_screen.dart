@@ -134,8 +134,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
   int _episodeNotifMinutes = 0;
   int _maxConcurrentDownloads = 1;
 
-  bool _showGoodreadsButton = false;
-  bool _showExplicitBadge = true;
   bool _loggingEnabled = false;
   bool _fullScreenPlayer = false;
   bool _lockPortrait = false;
@@ -985,7 +983,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final queueAutoDl = results[15] as bool;
     final mergeLibs = results[16] as bool;
     final maxConc = results[17] as int;
-    final showGoodreads = results[18] as bool;
     final logging = results[19] as bool;
     final fullScreen = results[20] as bool;
     final theme = results[21] as String;
@@ -1006,7 +1003,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final trustCerts = results[36] as bool;
     final coverPlay = results[37] as bool;
     final skipBarrier = results[38] as bool;
-    final showExplicit = results[39] as bool;
     final preReleases = results[40] as bool;
     final fadeDur = results[41] as int;
     final chime = results[42] as bool;
@@ -1061,7 +1057,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
       _queueAutoDownload = queueAutoDl;
       _mergeAbsorbingLibraries = mergeLibs;
       _maxConcurrentDownloads = maxConc;
-      _showGoodreadsButton = showGoodreads;
       _loggingEnabled = logging;
       _fullScreenPlayer = fullScreen;
       _snappyTransitions = snappyTrans;
@@ -1098,7 +1093,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
       _longForwardSkip = longFwd;
       _longBackSkip = longBack;
       _trustAllCerts = trustCerts;
-      _showExplicitBadge = showExplicit;
       _includePreReleases = preReleases;
       _sleepFadeDuration = fadeDur;
       _sleepChime = chime;
@@ -1233,8 +1227,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
   String _languageDisplayName(String code, AppLocalizations l) {
     switch (code) {
       case 'en': return 'English';
-      case 'de': return 'Deutsch';
-      case 'fr': return 'Français';
       case 'zh': return '中文';
       default: return l.languageSystemDefault;
     }
@@ -1244,7 +1236,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final cs = Theme.of(context).colorScheme;
     final tt = Theme.of(context).textTheme;
     final l = AppLocalizations.of(context)!;
-    const codes = ['', 'en', 'de', 'fr', 'zh'];
+    const codes = ['', 'en', 'zh'];
 
     final picked = await showModalBottomSheet<String>(
       context: context,
@@ -3571,33 +3563,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         const Divider(height: 1, indent: 16, endIndent: 16),
                       ]);
                     }),
-                    SwitchListTile(
-                      title: Text(l.showGoodreadsButton),
-                      subtitle: Text(
-                        _showGoodreadsButton
-                            ? l.showGoodreadsOnSubtitle
-                            : l.showGoodreadsOffSubtitle,
-                        style: tt.bodySmall?.copyWith(color: cs.onSurfaceVariant)),
-                      value: _showGoodreadsButton,
-                      onChanged: _loaded ? (v) {
-                        setState(() => _showGoodreadsButton = v);
-                        PlayerSettings.setShowGoodreadsButton(v);
-                      } : null,
-                    ),
-                    const Divider(height: 1, indent: 16, endIndent: 16),
-                    SwitchListTile(
-                      title: Text(l.showExplicitBadge),
-                      subtitle: Text(
-                        _showExplicitBadge
-                            ? l.showExplicitBadgeOnSubtitle
-                            : l.showExplicitBadgeOffSubtitle,
-                        style: tt.bodySmall?.copyWith(color: cs.onSurfaceVariant)),
-                      value: _showExplicitBadge,
-                      onChanged: _loaded ? (v) {
-                        setState(() => _showExplicitBadge = v);
-                        PlayerSettings.setShowExplicitBadge(v);
-                      } : null,
-                    ),
                     if (lib.libraries.length > 1) ...[
                       const Divider(height: 1, indent: 16, endIndent: 16),
                       ...lib.libraries
