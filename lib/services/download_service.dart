@@ -358,11 +358,18 @@ class DownloadService extends ChangeNotifier {
   /// through SAF ([_customDownloadUri]) in the task builder. This getter now
   /// only resolves the built-in location: the iOS app group container (so the
   /// widget extension and native player core can read it; falls back to
-  /// Documents/ if the app group lookup fails) or Android internal storage.
+  /// Documents/ if the app group lookup fails) or Android external storage
+  /// (Download/胖虎听书).
   Future<String> get downloadBasePath async {
     if (Platform.isIOS) {
       final groupPath = await _iosAppGroupAudioBase();
       if (groupPath != null) return groupPath;
+    }
+    if (Platform.isAndroid) {
+      final externalDir = await getExternalStorageDirectory();
+      if (externalDir != null) {
+        return '${externalDir.path}/Download/胖虎听书';
+      }
     }
     final appDir = await getApplicationDocumentsDirectory();
     return '${appDir.path}/downloads';
@@ -392,6 +399,7 @@ class DownloadService extends ChangeNotifier {
   Future<String> get downloadLocationLabel async {
     final uri = _customDownloadUri;
     if (uri != null && uri.isNotEmpty) return _friendlySafLabel(uri);
+    if (Platform.isAndroid) return 'Download/胖虎听书';
     return 'App Internal Storage (Default)';
   }
 
@@ -1537,23 +1545,15 @@ class DownloadService extends ChangeNotifier {
         unawaited(_cacheEbookForOffline(api, apiItemId, ebookFile, title));
       }
 
-      // Per-book destination. Android downloads to internal storage first - for
-      // both the internal default AND SAF custom folders. SAF books are then
-      // moved into the user's chosen folder under "Author/Title" on completion
-      // (a direct SAF write can't nest subfolders). iOS downloads into the app
-      // group container.
+      // Per-book destination. Android downloads to external storage (Download/胖虎听书)
+      // or internal storage as fallback. SAF books are then moved into the user's
+      // chosen folder under "Author/Title" on completion (a direct SAF write can't
+      // nest subfolders). iOS downloads into the app group container.
       final nestedName = (author != null && author.isNotEmpty)
           ? '${_sanitizePath(author)}/${_sanitizePath(title)}'
           : _sanitizePath(title);
-      String? relDir; // Android: relative to applicationDocuments
-      if (Platform.isIOS) {
-        final basePath = await downloadBasePath;
-        bookDir = Directory('$basePath/$nestedName');
-      } else {
-        final appDir = await getApplicationDocumentsDirectory();
-        relDir = 'downloads/$nestedName';
-        bookDir = Directory('${appDir.path}/$relDir');
-      }
+      final basePath = await downloadBasePath;
+      bookDir = Directory('$basePath/$nestedName');
       if (!bookDir.existsSync()) bookDir.createSync(recursive: true);
       bookDirRef = bookDir.path;
       debugPrint('[Download] "$title" location=${useSaf ? 'SAF' : 'default'} dir=${bookDir.path} tracks=${files.length}');
@@ -1641,37 +1641,20 @@ class DownloadService extends ChangeNotifier {
       for (int i = 0; i < files.length; i++) {
         final meta = jsonEncode({'itemId': itemId, 'i': i, 'n': files.length});
         final Task task;
-        if (Platform.isIOS) {
-          task = DownloadTask(
-            taskId: _taskId(itemId, i),
-            url: files[i].url,
-            headers: api.mediaHeaders,
-            filename: files[i].filename,
-            baseDirectory: BaseDirectory.root,
-            directory: bookDir.path,
-            group: _dlGroup,
-            metaData: meta,
-            updates: Updates.statusAndProgress,
-            requiresWiFi: wifiOnly,
-            retries: 3,
-            allowPause: true,
-          );
-        } else {
-          task = DownloadTask(
-            taskId: _taskId(itemId, i),
-            url: files[i].url,
-            headers: api.mediaHeaders,
-            filename: files[i].filename,
-            baseDirectory: BaseDirectory.applicationDocuments,
-            directory: relDir!,
-            group: _dlGroup,
-            metaData: meta,
-            updates: Updates.statusAndProgress,
-            requiresWiFi: wifiOnly,
-            retries: 3,
-            allowPause: true,
-          );
-        }
+        task = DownloadTask(
+          taskId: _taskId(itemId, i),
+          url: files[i].url,
+          headers: api.mediaHeaders,
+          filename: files[i].filename,
+          baseDirectory: BaseDirectory.root,
+          directory: bookDir.path,
+          group: _dlGroup,
+          metaData: meta,
+          updates: Updates.statusAndProgress,
+          requiresWiFi: wifiOnly,
+          retries: 3,
+          allowPause: true,
+        );
         // Must be registered before enqueue - the config is serialized into
         // the native task, so it survives app kills along with the task.
         FileDownloader().configureNotificationForTask(
