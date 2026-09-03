@@ -71,13 +71,12 @@ jobs:
       - name: Build GitHub APKs
         run: bash scripts/build-github-apks
 
-      - name: Rename artifacts
+      - name: Rename universal APK
         env:
           FNAME: ${{ steps.version.outputs.fname }}
         run: |
-          for apk in build/app/outputs/apk/github/release/*.apk; do
-            mv "$apk" "$(dirname "$apk")/${FNAME}.apk"
-          done
+          UNIVERSAL=$(ls build/app/outputs/apk/github/release/*-universal.apk | head -1)
+          mv "$UNIVERSAL" "build/app/outputs/apk/github/release/${FNAME}.apk"
 
       - name: Upload APK to GitHub Release
         env:
@@ -85,16 +84,15 @@ jobs:
           VERSION_TAG: ${{ steps.version.outputs.tag }}
           PRE: ${{ inputs.prerelease }}
         run: |
-          shopt -s nullglob
-          APKS=(build/app/outputs/apk/github/release/*.apk)
-          if [ "${#APKS[@]}" -eq 0 ]; then
-            echo "No APKs found"
+          APK="build/app/outputs/apk/github/release/${{ steps.version.outputs.fname }}.apk"
+          if [ ! -f "$APK" ]; then
+            echo "APK not found: $APK"
             exit 1
           fi
           if gh release view "$VERSION_TAG" &>/dev/null; then
-            gh release upload "$VERSION_TAG" "${APKS[@]}" --clobber
+            gh release upload "$VERSION_TAG" "$APK" --clobber
           else
             CREATE_ARGS=(--draft --title "$VERSION_TAG" --notes "中文汉化版本")
             [ "$PRE" = "true" ] && CREATE_ARGS+=(--prerelease)
-            gh release create "$VERSION_TAG" "${APKS[@]}" "${CREATE_ARGS[@]}"
+            gh release create "$VERSION_TAG" "$APK" "${CREATE_ARGS[@]}"
           fi
