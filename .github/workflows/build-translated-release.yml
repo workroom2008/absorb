@@ -1,14 +1,6 @@
 name: Build Translated Release
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'lib/l10n/**'
-      - 'lib/screens/**'
-      - 'lib/services/**'
-      - 'lib/widgets/**'
-      - 'pubspec.yaml'
   workflow_dispatch:
     inputs:
       prerelease:
