@@ -290,7 +290,15 @@ class _PlayerScreenState extends State<PlayerScreen> {
       },
       child: Scaffold(
         backgroundColor: _dominantColor,
-        body: GestureDetector(
+        body: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [_dominantColor, _dominantColor.withValues(alpha: 0.8)],
+            ),
+          ),
+          child: GestureDetector(
           onVerticalDragEnd: (details) {
             final vy = details.primaryVelocity ?? 0;
             if (vy > 300) _dismiss();
@@ -300,39 +308,37 @@ class _PlayerScreenState extends State<PlayerScreen> {
               children: [
                 _buildTopBar(l),
                 Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        const SizedBox(height: 16),
-                        _buildAlbumArt(l),
-                        const SizedBox(height: 12),
-                        if (currentChapter != null)
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 24),
-                            child: Text(
-                              currentChapter,
-                              style: TextStyle(
-                                color: Colors.white
-                                    .withValues(alpha: 0.7),
-                                fontSize: 13,
-                              ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 16),
+                      _buildAlbumArt(l),
+                      const SizedBox(height: 12),
+                      if (currentChapter != null)
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 24),
+                          child: Text(
+                            currentChapter,
+                            style: TextStyle(
+                              color: Colors.white
+                                  .withValues(alpha: 0.7),
+                              fontSize: 13,
                             ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
-                        const SizedBox(height: 4),
-                        _buildTitleSection(l),
-                        const SizedBox(height: 16),
-                        _buildFunctionButtons(l),
-                        const SizedBox(height: 20),
-                        _buildProgressBar(
-                            playerPosSec, totalDurSec, l),
-                        const SizedBox(height: 16),
-                        _buildBottomControls(l),
-                        const SizedBox(height: 24),
-                      ],
-                    ),
+                        ),
+                      const SizedBox(height: 4),
+                      _buildTitleSection(l),
+                      const SizedBox(height: 16),
+                      _buildFunctionButtons(l),
+                      const SizedBox(height: 20),
+                      _buildProgressBar(
+                          playerPosSec, totalDurSec, l),
+                      const SizedBox(height: 16),
+                      _buildBottomControls(l),
+                      const SizedBox(height: 24),
+                    ],
                   ),
                 ),
               ],
@@ -340,7 +346,8 @@ class _PlayerScreenState extends State<PlayerScreen> {
           ),
         ),
       ),
-    );
+    ),
+  );
   }
 
   // ── Top bar ──
@@ -383,12 +390,13 @@ class _PlayerScreenState extends State<PlayerScreen> {
 
   // ── Album art ──
   Widget _buildAlbumArt(AppLocalizations l) {
+    final albumSize = MediaQuery.of(context).size.height * 0.45;
     return Center(
       child: Container(
-        width: 260,
-        height: 260,
+        width: albumSize,
+        height: albumSize,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(24),
           boxShadow: [
             BoxShadow(
               color: _accentColor.withValues(alpha: 0.3),
@@ -398,7 +406,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
           ],
         ),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(24),
           child: _coverUrl != null
               ? _isLocalCover
                   ? Image.file(
@@ -477,7 +485,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 32),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           _funcButton(
             icon: isDownloaded
@@ -806,7 +814,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
             data: SliderThemeData(
               activeTrackColor: _accentColor,
               inactiveTrackColor:
-                  Colors.white.withValues(alpha: 0.15),
+                  Colors.white.withValues(alpha: 0.25),
               thumbColor: _accentColor,
               thumbShape:
                   const RoundSliderThumbShape(enabledThumbRadius: 6),
@@ -860,7 +868,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
                           borderRadius: BorderRadius.circular(4),
                         ),
                         child: Text(
-                          'HQ',
+                          '超高',
                           style: TextStyle(
                             color: Colors.white
                                 .withValues(alpha: 0.4),
@@ -929,25 +937,51 @@ class _PlayerScreenState extends State<PlayerScreen> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 32),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           // Playlist
-          IconButton(
-            icon: Icon(Icons.queue_music_rounded,
-                color: Colors.white.withValues(alpha: 0.6),
-                size: 24),
-            onPressed: () {},
+          GestureDetector(
+            onTap: () {},
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.queue_music_rounded,
+                    color: Colors.white.withValues(alpha: 0.6),
+                    size: 24),
+                const SizedBox(height: 4),
+                Text(
+                  '播放列表',
+                  style: TextStyle(
+                    color: Colors.white.withValues(alpha: 0.5),
+                    fontSize: 11,
+                  ),
+                ),
+              ],
+            ),
           ),
           // Previous chapter
-          IconButton(
-            icon: Icon(Icons.skip_previous_rounded,
-                color: Colors.white.withValues(alpha: 0.8),
-                size: 32),
-            onPressed: _isActive
+          GestureDetector(
+            onTap: _isActive
                 ? widget.player.skipToPreviousChapter
                 : null,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.skip_previous_rounded,
+                    color: Colors.white.withValues(alpha: 0.8),
+                    size: 32),
+                const SizedBox(height: 4),
+                Text(
+                  '上一曲',
+                  style: TextStyle(
+                    color: Colors.white.withValues(alpha: 0.5),
+                    fontSize: 11,
+                  ),
+                ),
+              ],
+            ),
           ),
-          // Play/Pause (large)
+          // Play/Pause (large - 2x size)
           GestureDetector(
             onTap: _isActive
                 ? () => widget.player
@@ -988,23 +1022,49 @@ class _PlayerScreenState extends State<PlayerScreen> {
             ),
           ),
           // Next chapter
-          IconButton(
-            icon: Icon(Icons.skip_next_rounded,
-                color: Colors.white.withValues(alpha: 0.8),
-                size: 32),
-            onPressed: _isActive
+          GestureDetector(
+            onTap: _isActive
                 ? widget.player.skipToNextChapter
                 : null,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.skip_next_rounded,
+                    color: Colors.white.withValues(alpha: 0.8),
+                    size: 32),
+                const SizedBox(height: 4),
+                Text(
+                  '下一曲',
+                  style: TextStyle(
+                    color: Colors.white.withValues(alpha: 0.5),
+                    fontSize: 11,
+                  ),
+                ),
+              ],
+            ),
           ),
           // Sleep timer
-          IconButton(
-            icon: Icon(Icons.bedtime_outlined,
-                color: Colors.white.withValues(alpha: 0.6),
-                size: 24),
-            onPressed: () {
+          GestureDetector(
+            onTap: () {
               showSleepTimerSheet(
                   context, _accentColor);
             },
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.bedtime_outlined,
+                    color: Colors.white.withValues(alpha: 0.6),
+                    size: 24),
+                const SizedBox(height: 4),
+                Text(
+                  '睡眠定时',
+                  style: TextStyle(
+                    color: Colors.white.withValues(alpha: 0.5),
+                    fontSize: 11,
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
