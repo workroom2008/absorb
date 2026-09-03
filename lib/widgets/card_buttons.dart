@@ -1771,7 +1771,7 @@ class _PlaybackHistorySheetBodyState extends State<_PlaybackHistoryBody>
       _serverFuture = _fetchServerSessions();
     }
     ScopedPrefs.getBool(_kAdvancedHistoryPrefKey).then((v) {
-      if (!mounted) return;
+    if (!context.mounted) return;
       setState(() => _advanced = v ?? false);
     });
   }
