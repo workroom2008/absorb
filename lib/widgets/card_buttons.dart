@@ -1160,6 +1160,12 @@ class CardActionDelegate {
           accent: accent, isActive: true, alwaysEnabled: true, large: large, compact: compact, iconsOnly: iconsOnly,
           child: CardSleepButtonInline(accent: accent, isActive: isPlaybackActive, large: large, compact: compact, iconsOnly: iconsOnly),
         );
+      case 'skip':
+        return CardWideButton(
+          icon: Icons.skip_next_rounded, label: l.skipIntroSettings,
+          accent: accent, isActive: true, alwaysEnabled: true, large: large, compact: compact, iconsOnly: iconsOnly,
+          onTap: () => _showSkipIntroOutroSettings(),
+        );
       case 'details':
         return CardWideButton(
           icon: (episodeId != null || isPodcastEpisode) ? Icons.podcasts_rounded : Icons.info_outline_rounded,
@@ -1272,6 +1278,15 @@ class CardActionDelegate {
           onTap: () {
             Navigator.pop(ctx);
             showSleepTimerSheet(context, accent);
+          },
+        );
+      case 'skip':
+        return MoreMenuItem(
+          icon: Icons.skip_next_rounded, label: l.skipIntroSettings, accent: accent,
+          enabled: true,
+          onTap: () {
+            Navigator.pop(ctx);
+            _showSkipIntroOutroSettings();
           },
         );
       case 'details':
@@ -1396,6 +1411,103 @@ class CardActionDelegate {
         accent: accent,
         buildItem: (id) => buildMoreMenuItem(id, accent, tt, ctx),
         onReorder: (order, newCount) => onReorder(order, newCount),
+      ),
+    );
+  }
+
+  void _showSkipIntroOutroSettings() async {
+    final l = AppLocalizations.of(context)!;
+    final cs = Theme.of(context).colorScheme;
+    final currentItemId = AudioPlayerService().currentItemId ?? '';
+    int introVal = await PlayerSettings.getSkipIntro(currentItemId);
+    int outroVal = await PlayerSettings.getSkipOutro(currentItemId);
+
+    if (!mounted) return;
+
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Theme.of(context).bottomSheetTheme.backgroundColor,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (ctx) => StatefulBuilder(
+        builder: (ctx, setSheetState) => SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  l.skipIntroSettings,
+                  style: TextStyle(
+                    color: cs.onSurface,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(l.skipIntro,
+                        style: TextStyle(color: cs.onSurfaceVariant, fontSize: 15)),
+                    Text('$introVal${l.seconds}',
+                        style: TextStyle(
+                            color: cs.primary,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold)),
+                  ],
+                ),
+                Slider(
+                  value: introVal.toDouble(),
+                  min: 0,
+                  max: 120,
+                  divisions: 24,
+                  activeColor: cs.primary,
+                  onChanged: (v) {
+                    setSheetState(() => introVal = v.round());
+                  },
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(l.skipOutro,
+                        style: TextStyle(color: cs.onSurfaceVariant, fontSize: 15)),
+                    Text('$outroVal${l.seconds}',
+                        style: TextStyle(
+                            color: cs.primary,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold)),
+                  ],
+                ),
+                Slider(
+                  value: outroVal.toDouble(),
+                  min: 0,
+                  max: 120,
+                  divisions: 24,
+                  activeColor: cs.primary,
+                  onChanged: (v) {
+                    setSheetState(() => outroVal = v.round());
+                  },
+                ),
+                const SizedBox(height: 12),
+                SizedBox(
+                  width: double.infinity,
+                  child: FilledButton(
+                    onPressed: () {
+                      PlayerSettings.setSkipIntro(currentItemId, introVal);
+                      PlayerSettings.setSkipOutro(currentItemId, outroVal);
+                      Navigator.pop(ctx);
+                    },
+                    child: Text(l.save),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
