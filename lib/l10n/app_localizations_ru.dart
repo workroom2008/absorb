@@ -8676,4 +8676,12 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get seconds => 's';
+
+  @override
+  String get featureHintContinueListeningGestures =>
+      'Tap a card to resume. Press and hold to see details.';
+
+  @override
+  String get featureHintSpeedPresets =>
+      'Tap + to save the current speed as a preset. Long-press a chip to remove it.';
 }

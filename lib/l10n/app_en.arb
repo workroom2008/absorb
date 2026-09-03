@@ -4891,5 +4891,9 @@
   "skipOutro": "Skip outro",
   "skipIntroSettings": "Skip intro settings",
   "skipOutroSettings": "Skip outro settings",
-  "seconds": "s"
+  "seconds": "s",
+  "featureHintContinueListeningGestures": "Tap a card to resume. Press and hold to see details.",
+  "featureHintSpeedPresets": "Tap + to save the current speed as a preset. Long-press a chip to remove it.",
+  "glassNavSettings": "Glass navigation bar settings",
+  "enableGlassNav": "Enable glass navigation bar"
 }

@@ -110,7 +110,6 @@ List<SettingSearchEntry> settingsSearchEntries(BuildContext context) {
     // ── Library ──
     SettingSearchEntry('Library', l.sectionLibrary, l.settingsPodcastTab, [l.settingsPodcastTabDesc]),
     SettingSearchEntry('Library', l.sectionLibrary, l.settingsPodcastTabLibrary, const []),
-    SettingSearchEntry('Library', l.sectionLibrary, l.hideEbookOnlyTitles, [l.hideEbookOnlyOnSubtitle, l.hideEbookOnlyOffSubtitle]),
     SettingSearchEntry('Library', l.sectionLibrary, l.showGoodreadsButton, [l.showGoodreadsOnSubtitle, l.showGoodreadsOffSubtitle]),
     SettingSearchEntry('Library', l.sectionLibrary, l.showExplicitBadge, [l.showExplicitBadgeOnSubtitle, l.showExplicitBadgeOffSubtitle]),
     SettingSearchEntry('Library', l.sectionLibrary, l.coverShapeLabel, [l.coverShapeDefault, l.coverShapeSquare, l.coverShapeRectangle]),
@@ -134,6 +133,5 @@ List<SettingSearchEntry> settingsSearchEntries(BuildContext context) {
     if (const bool.fromEnvironment('GITHUB_BUILD'))
       SettingSearchEntry('Advanced', l.sectionAdvanced, l.includePreReleases, [l.includePreReleasesOnSubtitle, l.includePreReleasesOffSubtitle]),
     SettingSearchEntry('Advanced', l.sectionAdvanced, l.adminRmab, [l.adminRmabConnected, l.adminRmabAskAdmin]),
-    SettingSearchEntry('Advanced', l.sectionAdvanced, l.transcriptionTitle, [l.transcriptionAdvancedSubtitle]),
   ];
 }

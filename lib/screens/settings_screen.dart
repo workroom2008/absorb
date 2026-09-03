@@ -31,7 +31,7 @@ import '../screens/backup_sync_screen.dart';
 import '../services/settings_sync_service.dart';
 import '../screens/change_password_screen.dart';
 import '../screens/auth_sessions_screen.dart';
-import '../screens/transcription_settings_screen.dart';
+
 import '../main.dart' show applyThemeMode, applyTrustAllCerts, applyFlatBackground, applyColorSource, applyManualSeed, applyGradientIntensity, applyUseColorEverywhere, applyEinkModeTheme, applyOrientationLock, localeNotifier, flatNotifier, gradientIntensityNotifier, snappyTransitionsNotifier;
 import '../services/wording.dart';
 import '../utils/share_origin.dart';
@@ -134,7 +134,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   String _podcastTabLibraryId = '';
   int _episodeNotifMinutes = 0;
   int _maxConcurrentDownloads = 1;
-  bool _hideEbookOnly = false;
+
   bool _showGoodreadsButton = false;
   bool _showExplicitBadge = true;
   bool _loggingEnabled = false;
@@ -915,41 +915,40 @@ class _SettingsScreenState extends State<SettingsScreen> {
       PlayerSettings.getQueueAutoDownload(),                  // 15
       PlayerSettings.getMergeAbsorbingLibrariesRaw(),         // 16
       PlayerSettings.getMaxConcurrentDownloads(),             // 17
-      PlayerSettings.getHideEbookOnly(),                      // 18
-      PlayerSettings.getShowGoodreadsButton(),                // 19
-      PlayerSettings.getLoggingEnabled(),                     // 20
-      PlayerSettings.getFullScreenPlayer(),                   // 21
-      PlayerSettings.getThemeMode(),                          // 22
-      PlayerSettings.getSnappyTransitions(),                  // 23
-      DownloadService().downloadLocationLabel,                // 24
-      DownloadService().totalDownloadSize,                    // 25
-      DownloadService.getDeviceStorage(),                     // 26
-      AutoSleepSettings.load(),                               // 27
-      UpdateCheckerService.currentInstalledVersion(),         // 29
-      PlayerSettings.getStreamingCacheSizeMb(),               // 30
-      PlayerSettings.getLocalServerEnabled(),                  // 31
-      PlayerSettings.getLocalServerUrl(),                      // 32
-      PlayerSettings.getAutoDownloadOnStream(),                  // 33
-      PlayerSettings.getStartScreen(),                           // 36
-      PlayerSettings.getPodcastQueueMode(),                      // 37
-      Future.value(''),                                              // 38 (unused, kept for index stability)
-      PlayerSettings.getRectangleCovers(),                           // 39
-      PlayerSettings.getTrustAllCerts(),                               // 40
-      PlayerSettings.getCoverPlayButton(),                             // 41
-      PlayerSettings.getSkipChapterBarrier(),                            // 42
-      PlayerSettings.getShowExplicitBadge(),                               // 43
-      PlayerSettings.getIncludePreReleases(),                               // 44
-      PlayerSettings.getSleepFadeDuration(),                                  // 45
-      PlayerSettings.getSleepChime(),                                         // 46
-      PlayerSettings.getSleepChimeVolume(),                                   // 47
-      PlayerSettings.getShakeSensitivity(),                                   // 48
-      PlayerSettings.getLanguage(),                                           // 49
-      PlayerSettings.getClassicWording(),                                     // 50
-      PlayerSettings.getQueuePlaylistId(),                                    // 51
-      PlayerSettings.getMediaControlsSpeedBookmark(),                         // 52
-      PlayerSettings.getLockSeekBar(),                                        // 53
+      PlayerSettings.getShowGoodreadsButton(),                // 18
+      PlayerSettings.getLoggingEnabled(),                     // 19
+      PlayerSettings.getFullScreenPlayer(),                   // 20
+      PlayerSettings.getThemeMode(),                          // 21
+      PlayerSettings.getSnappyTransitions(),                  // 22
+      DownloadService().downloadLocationLabel,                // 23
+      DownloadService().totalDownloadSize,                    // 24
+      DownloadService.getDeviceStorage(),                     // 25
+      AutoSleepSettings.load(),                               // 26
+      UpdateCheckerService.currentInstalledVersion(),         // 27
+      PlayerSettings.getStreamingCacheSizeMb(),               // 28
+      PlayerSettings.getLocalServerEnabled(),                  // 29
+      PlayerSettings.getLocalServerUrl(),                      // 30
+      PlayerSettings.getAutoDownloadOnStream(),                  // 31
+      PlayerSettings.getStartScreen(),                           // 32
+      PlayerSettings.getPodcastQueueMode(),                      // 33
+      Future.value(''),                                              // 34 (unused, kept for index stability)
+      PlayerSettings.getRectangleCovers(),                           // 35
+      PlayerSettings.getTrustAllCerts(),                               // 36
+      PlayerSettings.getCoverPlayButton(),                             // 37
+      PlayerSettings.getSkipChapterBarrier(),                            // 38
+      PlayerSettings.getShowExplicitBadge(),                               // 39
+      PlayerSettings.getIncludePreReleases(),                               // 40
+      PlayerSettings.getSleepFadeDuration(),                                  // 41
+      PlayerSettings.getSleepChime(),                                         // 42
+      PlayerSettings.getSleepChimeVolume(),                                   // 43
+      PlayerSettings.getShakeSensitivity(),                                   // 44
+      PlayerSettings.getLanguage(),                                           // 45
+      PlayerSettings.getClassicWording(),                                     // 46
+      PlayerSettings.getQueuePlaylistId(),                                    // 47
+      PlayerSettings.getMediaControlsSpeedBookmark(),                         // 48
+      PlayerSettings.getLockSeekBar(),                                        // 49
       PlayerSettings.getCardBackground(),                                     // card background
-      PlayerSettings.getProgressTextScale(),                                  // 54 (kept last — read via results.last)
+      PlayerSettings.getProgressTextScale(),                                  // 50 (kept last — read via results.last)
     ]);
     final s = results[0] as AutoRewindSettings;
     final progressScale = results.last as double;
@@ -989,40 +988,39 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final queueAutoDl = results[15] as bool;
     final mergeLibs = results[16] as bool;
     final maxConc = results[17] as int;
-    final hideEbook = results[18] as bool;
-    final showGoodreads = results[19] as bool;
-    final logging = results[20] as bool;
-    final fullScreen = results[21] as bool;
-    final theme = results[22] as String;
-    final snappyTrans = results[23] as bool;
-    final dlLabel = results[24] as String;
-    final dlSize = results[25] as int;
-    final deviceStorage = results[26] as Map<String, int>?;
-    final autoSleep = results[27] as AutoSleepSettings;
-    final appVersion = results[28] as String;
-    final cacheSizeMb = results[29] as int;
-    final localEnabled = results[30] as bool;
-    final localUrl = results[31] as String;
-    final autoDlStream = results[32] as bool;
-    final startScreen = results[33] as int;
-    final podcastQueueMode = results[34] as String;
-    // results[35] was cardButtonLayout, now unused
-    final rectCovers = results[36] as bool;
-    final trustCerts = results[37] as bool;
-    final coverPlay = results[38] as bool;
-    final skipBarrier = results[39] as bool;
-    final showExplicit = results[40] as bool;
-    final preReleases = results[41] as bool;
-    final fadeDur = results[42] as int;
-    final chime = results[43] as bool;
-    final chimeVol = results[44] as double;
-    final shakeSens = results[45] as String;
-    final language = results[46] as String;
-    final classicWording = results[47] as bool;
-    final qpId = results[48] as String?;
-    final notifSpeedBookmark = results[49] as bool;
-    final lockSeek = results[50] as bool;
-    final cardBg = results[51] as String;
+    final showGoodreads = results[18] as bool;
+    final logging = results[19] as bool;
+    final fullScreen = results[20] as bool;
+    final theme = results[21] as String;
+    final snappyTrans = results[22] as bool;
+    final dlLabel = results[23] as String;
+    final dlSize = results[24] as int;
+    final deviceStorage = results[25] as Map<String, int>?;
+    final autoSleep = results[26] as AutoSleepSettings;
+    final appVersion = results[27] as String;
+    final cacheSizeMb = results[28] as int;
+    final localEnabled = results[29] as bool;
+    final localUrl = results[30] as String;
+    final autoDlStream = results[31] as bool;
+    final startScreen = results[32] as int;
+    final podcastQueueMode = results[33] as String;
+    // results[34] was cardButtonLayout, now unused
+    final rectCovers = results[35] as bool;
+    final trustCerts = results[36] as bool;
+    final coverPlay = results[37] as bool;
+    final skipBarrier = results[38] as bool;
+    final showExplicit = results[39] as bool;
+    final preReleases = results[40] as bool;
+    final fadeDur = results[41] as int;
+    final chime = results[42] as bool;
+    final chimeVol = results[43] as double;
+    final shakeSens = results[44] as String;
+    final language = results[45] as String;
+    final classicWording = results[46] as bool;
+    final qpId = results[47] as String?;
+    final notifSpeedBookmark = results[48] as bool;
+    final lockSeek = results[49] as bool;
+    final cardBg = results[50] as String;
     final rmabBaseUrl = await ScopedPrefs.getString(kRmabBaseUrlKey);
     final rmabApiToken = await ScopedPrefs.getString(kRmabApiTokenKey);
     final sleepRewind = await PlayerSettings.getSleepRewindSeconds();
@@ -1070,7 +1068,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
       _queueAutoDownload = queueAutoDl;
       _mergeAbsorbingLibraries = mergeLibs;
       _maxConcurrentDownloads = maxConc;
-      _hideEbookOnly = hideEbook;
       _showGoodreadsButton = showGoodreads;
       _loggingEnabled = logging;
       _fullScreenPlayer = fullScreen;
@@ -3596,20 +3593,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ]);
                     }),
                     SwitchListTile(
-                      title: Text(l.hideEbookOnlyTitles),
-                      subtitle: Text(
-                        _hideEbookOnly
-                            ? l.hideEbookOnlyOnSubtitle
-                            : l.hideEbookOnlyOffSubtitle,
-                        style: tt.bodySmall?.copyWith(color: cs.onSurfaceVariant)),
-                      value: _hideEbookOnly,
-                      onChanged: _loaded ? (v) {
-                        setState(() => _hideEbookOnly = v);
-                        PlayerSettings.setHideEbookOnly(v);
-                      } : null,
-                    ),
-                    const Divider(height: 1, indent: 16, endIndent: 16),
-                    SwitchListTile(
                       title: Text(l.showGoodreadsButton),
                       subtitle: Text(
                         _showGoodreadsButton
@@ -3944,16 +3927,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         style: tt.bodySmall?.copyWith(color: cs.onSurfaceVariant)),
                       trailing: Icon(Icons.chevron_right_rounded, color: cs.onSurfaceVariant.withValues(alpha: 0.5)),
                       onTap: _openRmabSheetFromSettings,
-                    ),
-                    const Divider(height: 1, indent: 16, endIndent: 16),
-                    ListTile(
-                      leading: Icon(Icons.record_voice_over_rounded, color: cs.primary),
-                      title: Text(l.transcriptionTitle),
-                      subtitle: Text(l.transcriptionAdvancedSubtitle,
-                        style: tt.bodySmall?.copyWith(color: cs.onSurfaceVariant)),
-                      trailing: Icon(Icons.chevron_right_rounded, color: cs.onSurfaceVariant.withValues(alpha: 0.5)),
-                      onTap: () => Navigator.push(context, MaterialPageRoute(
-                        builder: (_) => const TranscriptionSettingsScreen())),
                     ),
                   ],
                 ),

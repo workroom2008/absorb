@@ -4983,5 +4983,9 @@
   "skipOutro": "跳过片尾",
   "skipIntroSettings": "片头跳过设置",
   "skipOutroSettings": "片尾跳过设置",
-  "seconds": "秒"
+  "seconds": "秒",
+  "featureHintContinueListeningGestures": "点击卡片继续播放，长按查看详情。",
+  "featureHintSpeedPresets": "点击 + 将当前速度保存为预设。长按芯片可移除。",
+  "glassNavSettings": "玻璃导航栏设置",
+  "enableGlassNav": "启用玻璃导航栏"
 }

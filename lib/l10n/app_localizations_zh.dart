@@ -8415,4 +8415,10 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get seconds => '秒';
+
+  @override
+  String get featureHintContinueListeningGestures => '点击卡片继续播放，长按查看详情。';
+
+  @override
+  String get featureHintSpeedPresets => '点击 + 将当前速度保存为预设。长按芯片可移除。';
 }

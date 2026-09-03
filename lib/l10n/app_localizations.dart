@@ -14996,6 +14996,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'s'**
   String get seconds;
+
+  /// No description provided for @featureHintContinueListeningGestures.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap a card to resume. Press and hold to see details.'**
+  String get featureHintContinueListeningGestures;
+
+  /// No description provided for @featureHintSpeedPresets.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap + to save the current speed as a preset. Long-press a chip to remove it.'**
+  String get featureHintSpeedPresets;
 }
 
 class _AppLocalizationsDelegate
