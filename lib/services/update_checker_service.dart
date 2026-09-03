@@ -47,7 +47,7 @@ int? betaNumberFromReleaseNotes(String notes) {
 }
 
 class UpdateCheckerService {
-  static const _repo = 'pounat/absorb'; // Update this to your repo
+  static const _repo = 'workroom2008/absorb';
   static const _checkInterval = Duration(hours: 12);
   static const _dismissedKey = 'update_dismissed_version';
   static const _lastCheckKey = 'update_last_check';

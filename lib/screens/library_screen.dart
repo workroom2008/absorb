@@ -518,10 +518,8 @@ class LibraryScreenState extends State<LibraryScreen>
   void _initTabController() {
     final lib = context.read<LibraryProvider>();
     if (!lib.isPodcastLibrary) {
-      // 5 = Library/Series/Authors/Narrators/Lists. The Lists pill is only
-      // shown when lists exist; since the views are an IndexedStack (no swipe),
-      // an unreachable 5th slot is harmless.
-      _tabController = TabController(length: 5, vsync: this);
+      // 1 = Library only (Series/Authors/Narrators/Lists removed)
+      _tabController = TabController(length: 1, vsync: this);
       _tabController!.addListener(_onTabChanged);
     }
   }
@@ -564,17 +562,11 @@ class LibraryScreenState extends State<LibraryScreen>
       });
 
       // Rebuild tab controller if library type changed
-      final needsTabs = false; // Always hide tabs for cleaner UI
       final hasTabs = _tabController != null;
-      if (needsTabs != hasTabs) {
+      if (hasTabs) {
         _tabController?.removeListener(_onTabChanged);
         _tabController?.dispose();
-        if (needsTabs) {
-          _tabController = TabController(length: 5, vsync: this);
-          _tabController!.addListener(_onTabChanged);
-        } else {
-          _tabController = null;
-        }
+        _tabController = null;
         _currentTab = 0;
       }
 
@@ -2951,10 +2943,6 @@ class LibraryScreenState extends State<LibraryScreen>
     final l = AppLocalizations.of(context)!;
     final labels = [
       l.libraryTabLibrary,
-      l.libraryTabSeries,
-      l.libraryTabAuthors,
-      l.libraryTabNarrators,
-      'Lists',
     ];
     return Center(
       child: Padding(

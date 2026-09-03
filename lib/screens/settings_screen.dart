@@ -61,15 +61,9 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   static const _isPlayStoreBuild = bool.fromEnvironment('PLAYSTORE_BUILD');
   static const _isGithubBuild = bool.fromEnvironment('GITHUB_BUILD');
-  // Distribution label shown next to the version. The F-Droid build passes
-  // neither define, so it falls through here.
-  static String get _flavorLabel =>
-      _isGithubBuild ? 'GitHub' : _isPlayStoreBuild ? 'Play Store' : 'F-Droid';
 
   String _versionLine(AppLocalizations l) {
-    final base = Platform.isIOS
-        ? l.appVersionFormat(_appVersion)
-        : '$_flavorLabel - $_appVersion';
+    final base = l.appVersionFormat(_appVersion);
     final beta = betaNumberFor(_appVersion);
     return beta == null ? base : '$base (${l.betaLabel(beta)})';
   }
@@ -3841,25 +3835,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         } : null,
                       ),
                     ],
-                    if (_isGithubBuild) ...[
-                      const Divider(height: 1, indent: 16, endIndent: 16),
-                      SwitchListTile(
-                        title: Row(children: [
-                          Flexible(child: Text(l.includePreReleases)),
-                          _infoIcon(l.preReleaseUpdatesInfoTitle, l.preReleaseUpdatesInfoContent),
-                        ]),
-                        subtitle: Text(
-                          _includePreReleases
-                              ? l.includePreReleasesOnSubtitle
-                              : l.includePreReleasesOffSubtitle,
-                          style: tt.bodySmall?.copyWith(color: cs.onSurfaceVariant)),
-                        value: _includePreReleases,
-                        onChanged: _loaded ? (v) async {
-                          setState(() => _includePreReleases = v);
-                          await PlayerSettings.setIncludePreReleases(v);
-                        } : null,
-                      ),
-                    ],
                   ],
                 ),
                 const SizedBox(height: 16),
@@ -3899,19 +3874,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      // Flavor prefix is an Android distribution concept
-                      // (GitHub / Play Store / F-Droid). iOS has no flavor, so
-                      // it keeps the plain version. Beta builds add which
-                      // beta of the cycle this is; full releases show nothing.
                       _versionLine(l),
                       style: tt.bodySmall?.copyWith(
                           color: cs.onSurfaceVariant.withValues(alpha: 0.4)),
-                    ),
-                    const SizedBox(width: 4),
-                    Icon(
-                      _isGithubBuild ? Icons.code_rounded : Icons.store_rounded,
-                      size: 14,
-                      color: cs.onSurfaceVariant.withValues(alpha: 0.3),
                     ),
                     if (auth.serverVersion != null)
                       Text(

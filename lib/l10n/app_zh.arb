@@ -304,7 +304,7 @@
       }
     }
   },
-  "statsTitle": "你的统计",
+  "statsTitle": "统计",
   "statsCouldNotLoad": "无法加载统计数据",
   "statsTotalListeningTime": "总收听时长",
   "statsHoursUnit": "小时",
