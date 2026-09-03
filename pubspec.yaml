@@ -1,7 +1,7 @@
 name: absorb
 description: 胖虎听书 - 跨平台有声书客户端
 publish_to: 'none'
-version: 1.10.0+265
+version: 1.11.0+266
 
 environment:
   sdk: '>=3.10.0 <4.0.0'

@@ -57,11 +57,11 @@ jobs:
           BUILD="${RAW##*+}"
           BASE="panghu-${RAW//+/-}"
           if [ "$PRE" = "true" ]; then
-            echo "tag=v${VERSION_NAME}-zh-${BUILD}" >> "$GITHUB_OUTPUT"
-            echo "fname=${BASE}-zh-pre" >> "$GITHUB_OUTPUT"
+            echo "tag=v${VERSION_NAME}-${BUILD}-pre" >> "$GITHUB_OUTPUT"
+            echo "fname=${BASE}-pre" >> "$GITHUB_OUTPUT"
           else
-            echo "tag=v${VERSION_NAME}-zh" >> "$GITHUB_OUTPUT"
-            echo "fname=${BASE}-zh" >> "$GITHUB_OUTPUT"
+            echo "tag=v${VERSION_NAME}" >> "$GITHUB_OUTPUT"
+            echo "fname=${BASE}" >> "$GITHUB_OUTPUT"
           fi
           echo "raw=$RAW" >> "$GITHUB_OUTPUT"
 
