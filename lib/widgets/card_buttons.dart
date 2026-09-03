@@ -1221,12 +1221,6 @@ class CardActionDelegate {
           accent: accent, isActive: true, alwaysEnabled: true, large: large, compact: compact, iconsOnly: iconsOnly,
           onTap: () => showHistory(context, accent, tt),
         );
-      case 'remove':
-        return CardWideButton(
-          icon: Icons.remove_circle_outline_rounded, label: (compact || short) ? l.remove : Wording.of(context).removeFromAbsorbing,
-          accent: Colors.red.shade300, isActive: true, alwaysEnabled: true, large: large, compact: compact, iconsOnly: iconsOnly,
-          onTap: () { removeFromAbsorbing(); onRemoveExtra?.call(); },
-        );
       case 'car':
         return CardWideButton(
           icon: Icons.directions_car_rounded, label: l.carModeTitle,
@@ -1322,12 +1316,6 @@ class CardActionDelegate {
           icon: Icons.history_rounded, label: l.playbackHistory, accent: accent,
           enabled: true,
           onTap: () { Navigator.pop(ctx); showHistory(context, accent, tt); },
-        );
-      case 'remove':
-        return MoreMenuItem(
-          icon: Icons.remove_circle_outline_rounded, label: Wording.of(context).removeFromAbsorbing,
-          accent: Colors.red.shade300,
-          onTap: () { Navigator.pop(ctx); removeFromAbsorbing(); onRemoveExtra?.call(); },
         );
       case 'car':
         return MoreMenuItem(

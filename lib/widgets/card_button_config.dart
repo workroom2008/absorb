@@ -31,8 +31,6 @@ String localizedCardButtonLabel(AppLocalizations l, CardButtonDef def) {
       return 'AirPlay';
     case 'history':
       return l.playbackHistory;
-    case 'remove':
-      return classicWordingNotifier.value ? 'Remove from Now Playing' : l.removeFromAbsorbing;
     case 'car':
       return l.carModeTitle;
     case 'download':
@@ -61,7 +59,6 @@ const _allCardButtons = [
   CardButtonDef('cast', 'Cast to Device', Icons.cast_rounded),
   CardButtonDef('airplay', 'AirPlay', Icons.airplay_rounded),
   CardButtonDef('history', 'Playback History', Icons.history_rounded),
-  CardButtonDef('remove', 'Remove from Absorbing', Icons.remove_circle_outline_rounded),
   CardButtonDef('car', 'Car Mode', Icons.directions_car_rounded),
   CardButtonDef('download', 'Download', Icons.download_outlined),
 ];
