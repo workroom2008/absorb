@@ -2554,29 +2554,6 @@ class LibraryScreenState extends State<LibraryScreen>
                     },
                   ),
                 ),
-                if (hasTabs && !_isInSearchMode)
-                  Positioned(
-                    left: 0,
-                    right: 0,
-                    bottom: 12,
-                    child: ValueListenableBuilder<double>(
-                      valueListenable: _revealDriver.notifier,
-                      // Translate only; skip the Opacity saveLayer that was
-                      // forcing a per-frame re-raster of the BackdropFilter
-                      // pill. Skip painting entirely once basically hidden.
-                      builder: (_, reveal, child) {
-                        if (reveal < 0.02) return const SizedBox.shrink();
-                        return IgnorePointer(
-                          ignoring: reveal < 0.5,
-                          child: Transform.translate(
-                            offset: Offset(0, (1 - reveal) * 80),
-                            child: child,
-                          ),
-                        );
-                      },
-                      child: RepaintBoundary(child: _buildFloatingTabBar(cs)),
-                    ),
-                  ),
                 if (!hasTabs && !_isInSearchMode)
                   Positioned(
                     left: 0,
@@ -2805,6 +2782,41 @@ class LibraryScreenState extends State<LibraryScreen>
                               ),
                             ),
                           ),
+                        GestureDetector(
+                          onTap: () {
+                            _showSortFilterSheet(
+                              context,
+                              cs,
+                              Theme.of(context).textTheme,
+                            );
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                            decoration: BoxDecoration(
+                              color: cs.primary.withValues(alpha: 0.15),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  '排序',
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w700,
+                                    color: cs.primary,
+                                  ),
+                                ),
+                                const SizedBox(width: 4),
+                                Icon(
+                                  Icons.sort_rounded,
+                                  size: 14,
+                                  color: cs.primary,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
                       ],
                 ),
                 Padding(
@@ -2933,68 +2945,6 @@ class LibraryScreenState extends State<LibraryScreen>
                 ),
               );
             }),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildFloatingTabBar(ColorScheme cs) {
-    return Align(
-      alignment: Alignment.centerRight,
-      child: Padding(
-        padding: const EdgeInsets.only(right: 16),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(24),
-          child: BackdropFilter(
-            filter: ui.ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-            child: Container(
-              padding: const EdgeInsets.all(4),
-              decoration: BoxDecoration(
-                color: cs.surface.withValues(alpha: 0.6),
-                borderRadius: BorderRadius.circular(24),
-                border: Border.all(color: cs.primary.withValues(alpha: 0.25)),
-              ),
-              child: GestureDetector(
-                onTap: () {
-                  _showSortFilterSheet(
-                    context,
-                    cs,
-                    Theme.of(context).textTheme,
-                  );
-                },
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 200),
-                  curve: Curves.easeInOut,
-                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-                  decoration: BoxDecoration(
-                    color: cs.primary.withValues(alpha: 0.15),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        '排序',
-                        maxLines: 1,
-                        softWrap: false,
-                        style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w700,
-                          color: cs.primary,
-                        ),
-                      ),
-                      const SizedBox(width: 4),
-                      Icon(
-                        Icons.sort_rounded,
-                        size: 14,
-                        color: cs.primary,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
           ),
         ),
       ),
