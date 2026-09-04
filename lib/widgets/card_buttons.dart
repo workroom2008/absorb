@@ -1162,7 +1162,7 @@ class CardActionDelegate {
         );
       case 'skip':
         return CardWideButton(
-          icon: Icons.skip_next_rounded, label: l.skipIntroSettings,
+          icon: Icons.content_cut_rounded, label: l.skipIntroSettings,
           accent: accent, isActive: true, alwaysEnabled: true, large: large, compact: compact, iconsOnly: iconsOnly,
           onTap: () => _showSkipIntroOutroSettings(),
         );

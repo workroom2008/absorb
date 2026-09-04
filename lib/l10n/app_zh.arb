@@ -686,7 +686,7 @@
       "_yirYear": { "type": "String" }
     }
   },
-  "appVersionFormat": "Absorb v{version}",
+  "appVersionFormat": "胖虎听书 v{version}",
   "@appVersionFormat": {
     "placeholders": {
       "version": {

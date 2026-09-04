@@ -56,7 +56,7 @@ const _allCardButtons = [
   CardButtonDef('chapters', 'Chapters', Icons.list_rounded),
   CardButtonDef('speed', 'Speed', Icons.speed_rounded),
   CardButtonDef('sleep', 'Timer', Icons.nightlight_round_outlined),
-  CardButtonDef('skip', 'Skip Intro/Outro', Icons.skip_next_rounded),
+  CardButtonDef('skip', 'Skip Intro/Outro', Icons.content_cut_rounded),
   CardButtonDef('details', 'Book Details', Icons.info_outline_rounded),
   CardButtonDef('equalizer', 'Equalizer', Icons.equalizer_rounded),
   CardButtonDef('cast', 'Cast to Device', Icons.cast_rounded),

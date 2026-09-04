@@ -2940,16 +2940,10 @@ class LibraryScreenState extends State<LibraryScreen>
   }
 
   Widget _buildFloatingTabBar(ColorScheme cs) {
-    final l = AppLocalizations.of(context)!;
-    final labels = [
-      l.libraryTabLibrary,
-    ];
-    return Center(
+    return Align(
+      alignment: Alignment.centerRight,
       child: Padding(
-        // Inset from the screen edges; the FittedBox below scales the whole
-        // pill row down to fit this width so it never overflows on small or
-        // zoomed/large-font screens.
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.only(right: 16),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(24),
           child: BackdropFilter(
@@ -2961,67 +2955,43 @@ class LibraryScreenState extends State<LibraryScreen>
                 borderRadius: BorderRadius.circular(24),
                 border: Border.all(color: cs.primary.withValues(alpha: 0.25)),
               ),
-              child: FittedBox(
-                fit: BoxFit.scaleDown,
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: List.generate(labels.length, (i) {
-                    final active = _currentTab == i;
-                    return GestureDetector(
-                      onTap: () {
-                        if (active) {
-                          _showSortFilterSheet(
-                            context,
-                            cs,
-                            Theme.of(context).textTheme,
-                          );
-                        } else {
-                          _tabController?.animateTo(i);
-                        }
-                      },
-                      child: AnimatedContainer(
-                        duration: const Duration(milliseconds: 200),
-                        curve: Curves.easeInOut,
-                        padding: EdgeInsets.symmetric(
-                          horizontal: active ? 14 : 12,
-                          vertical: 8,
-                        ),
-                        decoration: BoxDecoration(
-                          color: active
-                              ? cs.primary.withValues(alpha: 0.15)
-                              : Colors.transparent,
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              labels[i],
-                              maxLines: 1,
-                              softWrap: false,
-                              style: TextStyle(
-                                fontSize: 13,
-                                fontWeight: active
-                                    ? FontWeight.w700
-                                    : FontWeight.w500,
-                                color: active
-                                    ? cs.primary
-                                    : cs.onSurfaceVariant,
-                              ),
-                            ),
-                            if (active) ...[
-                              const SizedBox(width: 4),
-                              Icon(
-                                Icons.sort_rounded,
-                                size: 14,
-                                color: cs.primary,
-                              ),
-                            ],
-                          ],
+              child: GestureDetector(
+                onTap: () {
+                  _showSortFilterSheet(
+                    context,
+                    cs,
+                    Theme.of(context).textTheme,
+                  );
+                },
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 200),
+                  curve: Curves.easeInOut,
+                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: cs.primary.withValues(alpha: 0.15),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        '排序',
+                        maxLines: 1,
+                        softWrap: false,
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w700,
+                          color: cs.primary,
                         ),
                       ),
-                    );
-                  }),
+                      const SizedBox(width: 4),
+                      Icon(
+                        Icons.sort_rounded,
+                        size: 14,
+                        color: cs.primary,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

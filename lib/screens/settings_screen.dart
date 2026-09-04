@@ -14,7 +14,6 @@ import '../services/download_service.dart';
 import '../services/episode_notification_service.dart';
 import '../services/sleep_timer_service.dart';
 import '../services/user_account_service.dart';
-import '../services/log_service.dart';
 import '../services/scoped_prefs.dart';
 import '../services/socket_service.dart';
 import '../screens/login_screen.dart';
@@ -22,7 +21,6 @@ import '../screens/app_shell.dart';
 import '../build_info.dart';
 import '../services/update_checker_service.dart';
 import '../services/audiobookshelf_update_service.dart';
-import '../widgets/update_dialog.dart';
 import '../widgets/nav_hold_options.dart';
 import '../screens/admin_screen.dart';
 import '../screens/downloads_screen.dart';
@@ -34,7 +32,6 @@ import '../screens/auth_sessions_screen.dart';
 
 import '../main.dart' show applyThemeMode, applyTrustAllCerts, applyFlatBackground, applyColorSource, applyManualSeed, applyGradientIntensity, applyUseColorEverywhere, applyEinkModeTheme, applyOrientationLock, localeNotifier, flatNotifier, gradientIntensityNotifier, snappyTransitionsNotifier;
 import '../services/wording.dart';
-import '../utils/share_origin.dart';
 import '../widgets/settings_search.dart';
 import 'settings_search_index.dart';
 import '../widgets/absorb_page_header.dart';
@@ -45,8 +42,6 @@ import '../widgets/card_scrubber_mode_selector.dart';
 import '../widgets/collapsible_section.dart';
 import '../widgets/overlay_toast.dart';
 import '../widgets/tips_sheet.dart';
-import '../widgets/feature_hint.dart';
-import '../widgets/welcome_sheet.dart';
 import '../widgets/server_connection_editor.dart';
 import '../widgets/server_admin_status_badges.dart';
 import '../l10n/app_localizations.dart';
@@ -3886,24 +3881,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
                   ],
                 )),
-
-                if (_isGithubBuild) ...[
-                  const SizedBox(height: 4),
-                  Center(child: TextButton.icon(
-                    onPressed: () async {
-                      final info = await UpdateCheckerService.check(force: true, includePreReleases: _includePreReleases);
-                      if (!mounted) return;
-                      if (info == null || !info.hasUpdate) {
-                        showOverlayToast(context, l.onLatestVersion,
-                            icon: Icons.check_circle_outline_rounded);
-                        return;
-                      }
-                      await UpdateDialog.show(context, info);
-                    },
-                    icon: const Icon(Icons.system_update_rounded, size: 16),
-                    label: Text(l.checkForUpdate),
-                  )),
-                ],
 
                 const SizedBox(height: 100),
               ],
